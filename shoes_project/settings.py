@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     # local
     'users.apps.UsersConfig',
+    'magazyn.apps.MagazynConfig',
 ]
 
 MIDDLEWARE = [
