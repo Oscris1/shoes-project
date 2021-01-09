@@ -94,7 +94,7 @@ class Buty(models.Model):
     marka = models.ForeignKey(Marka, on_delete=models.PROTECT)
     model_buta = models.ForeignKey(
         ModelButa, 
-        on_delete=models.PROTECT, 
+        on_delete=models.PROTECT,
         )
     typ = models.CharField(max_length=50)
     kolor = models.CharField(max_length=50)

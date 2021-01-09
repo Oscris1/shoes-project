@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Lista butów</h1>
+    {% for para in buty %}
+    <p>{{ para.marka }}</p>
+    {% endfor %}
+{% endblock content %}
