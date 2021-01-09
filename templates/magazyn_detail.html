@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 
-{% block content %}
-    
-    <p>Dana para</p>
-    <p>{{ para.marka }}</p>
+{% load static %}
 
+{% block content %}
+    <div class='container-fluid'>
+        <h1>Dana para</h1>
+        <p>{{ para.marka }}</p>
+    </div>
 {% endblock content %}
