@@ -31,7 +31,7 @@ class MagazynTests(TestCase):
             data_sprzedazy='2021-01-19',
             cena_sprzedazy='490',
         )
-
+    # Testy dodawania do bazy danych:
     def test_marka_listening(self):
         self.assertEqual(f'{self.marka.name}', 'Adidas'),
 
@@ -53,7 +53,7 @@ class MagazynTests(TestCase):
         self.assertEqual(f'{self.buty.gdzie_kupione}', 'AdidasApp'),
         self.assertEqual(f'{self.buty.data_sprzedazy}', '2021-01-19'),
         self.assertEqual(f'{self.buty.cena_sprzedazy}', '490'),
-
+    # Testy widoków:
     def test_magazyn_list_view(self):
         response = self.client.get(reverse('magazyn_list'))
         self.assertEqual(response.status_code, 200)

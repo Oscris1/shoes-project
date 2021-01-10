@@ -2,6 +2,8 @@
 
 {% load static %}
 
+{% block title %} Magazyn {% endblock title %}
+
 {% block content %}
 <div class="container-fluid main-site">
     <h1>Lista butów</h1>
@@ -23,8 +25,6 @@
                     <td>{{para.rozmiar}}</td>
                     <td>{{para.data_zakupu}}</td>
                     <td>{{para.status}}</td>
-                    
-                    
                 </tr>
            {% endfor %}
 

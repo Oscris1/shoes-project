@@ -4,7 +4,34 @@
 
 {% block content %}
     <div class='container-fluid main-site'>
-        <h1>Dana para</h1>
-        <p>{{ para.marka }}</p>
+        <h1>{{ para.marka }} {{ para.model_buta }}</h1>
+        <div class="row card-body">
+            <div class="col-lg-3 col-md-5 col-sm-12 card detail-card">
+                <p><b>Marka:</b>&nbsp;&nbsp;{{ para.marka }}</p>
+                <p><b>Model:</b>&nbsp;&nbsp;{{ para.model_buta }}</p>
+                <p><b>Typ:</b>&nbsp;&nbsp;&nbsp;{{ para.typ }}</p>
+                <p><b>Kolor:</b>&nbsp;&nbsp;{{ para.kolor }}</p>
+                <p><b>Rozmiar:</b>&nbsp;&nbsp;{{ para.rozmiar }}</p>
+            </div>
+
+            <div class="col-lg-1 col-md-1  "></div>
+
+            <div class="col-lg-4 col-md-6 col-sm-12 card detail-card">
+                <p><b>Data zakupu:</b>&nbsp;&nbsp;{{ para.data_zakupu }}</p>
+                <p><b>Cena zakupu:</b>&nbsp;&nbsp;{{ para.cena_zakupu }} zł</p>
+                <p><b>Gdzie kupione:</b>&nbsp;&nbsp;{{ para.gdzie_kupione }}</p>
+                <p><b>Status:</b>&nbsp;&nbsp;{{ para.status }}</p>
+                <p><b>Szacowana wartość:</b>&nbsp;&nbsp;{{ para.szacowana_wartosc }} zł</p>
+            </div>
+
+            <div class="col-lg-1"></div>
+
+            <div class="col-lg-3 col-md-12 card detail-card">
+                
+                <p><b>Data sprzedaży:</b>&nbsp;&nbsp;{{ para.data_sprzedazy }}</p>
+                <p><b>Cena sprzedaży</b>&nbsp;&nbsp;{{ para.cena_sprzedazy }}</p>
+                <p><b>Uwagi:</b>&nbsp;&nbsp;{{ para.uwagi }}</p>
+            </div>
+        </div>
     </div>
 {% endblock content %}

@@ -3,6 +3,15 @@ body {
 }
 
 .main-site {
-    padding: 2% 5%;
-    text-align: center;
+    padding: 2% 5% 2% 5%;
+}
+
+.detail-card{
+    padding: 3%;
+    margin-bottom: 6%;
+}
+
+.navbar{
+    padding-left: 5%;
+    padding-right: 5%;
 }
