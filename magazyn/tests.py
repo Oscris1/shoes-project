@@ -1,6 +1,7 @@
 from django.test import TestCase
 
 from .models import Marka, ModelButa, Buty
+from django.urls import reverse
 
 # Create your tests here.
 class MagazynTests(TestCase):
@@ -52,3 +53,17 @@ class MagazynTests(TestCase):
         self.assertEqual(f'{self.buty.gdzie_kupione}', 'AdidasApp'),
         self.assertEqual(f'{self.buty.data_sprzedazy}', '2021-01-19'),
         self.assertEqual(f'{self.buty.cena_sprzedazy}', '490'),
+
+    def test_magazyn_list_view(self):
+        response = self.client.get(reverse('magazyn_list'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Adidas')
+        self.assertNotContains(response, 'Tego nie powinno tu być na 100%')
+        self.assertTemplateUsed(response, 'magazyn_list.html')
+
+    def test_magazyn_detail_view(self):
+        response = self.client.get(f'/magazyn/{self.buty.pk}/')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Adidas')
+        self.assertNotContains(response, 'Tego nie powinno tu być na 100%')
+        self.assertTemplateUsed(response, 'magazyn_detail.html')
