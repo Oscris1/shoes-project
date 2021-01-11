@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 
 from .models import Marka, ModelButa, Buty
 from django.urls import reverse
@@ -101,17 +101,27 @@ class MagazynTests(TestCase):
 
     def test_magazyn_update_view(self):
         response = self.client.post(reverse('magazyn_update', args=str(self.buty.pk)), {
+            'marka': 'Adidas',
+            'model_buta' : 'Yeezy',
+            'typ' : 'Frozen',
             'kolor' : 'Red',
             'rozmiar' : '45 1/2',
-            'szacowana_wartosc': 1500,
+            'data_zakupu': '2020-05-09',
+            'cena_zakupu': 899,
+            'szacowana_wartosc': 1200,
+            'uwagi': 'super',
+            'status': "W magazynie",
+            'gdzie_kupione': 'AdidasApp',
+            'data_sprzedazy': '2020-12-17',
+            'cena_sprzedazy': 1500,
         })
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200) #why not 302
         self.assertContains(response, 'Adidas')
-        self.assertContains(response, 'Red')
-        self.assertContains(response, '45 1/2')
-        self.assertContains(response, '1500')
+        self.assertEqual(self.buty.kolor, 'Red')
+        self.assertEqual(self.buty.data_sprzedazy, '2020-12-17')
+        self.assertEqual(self.buty.cena_sprzedazy, '1500')
 
     def test_magazyn_delete_view(self):
         response = self.client.get(reverse('magazyn_delete', args=[str(self.buty.pk)]))
         self.assertEqual(response.status_code, 200)
-        # I dont know why pk is 6
+        

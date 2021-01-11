@@ -35,8 +35,8 @@ class MagazynCreateView(CreateView):
 
 class MagazynUpdateView(UpdateView):
     model = Buty
-    fields = "__all__"
     template_name='magazyn_update.html'
+    fields = "__all__"
 
 
 class MagazynDeleteView(DeleteView):
