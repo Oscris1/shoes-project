@@ -1,5 +1,5 @@
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import CreateView 
+from django.views.generic.edit import CreateView, UpdateView
 from .models import Buty
 from .filters import ButyFilter
 
@@ -30,3 +30,9 @@ class MagazynCreateView(CreateView):
     model = Buty
     fields = "__all__"
     template_name='magazyn_create.html'
+
+
+class MagazynUpdateView(UpdateView):
+    model = Buty
+    fields = "__all__"
+    template_name='magazyn_update.html'

@@ -4,7 +4,16 @@
 
 {% block content %}
     <div class='container-fluid main-site'>
-        <h1>{{ para.marka }} {{ para.model_buta }}</h1>
+        <div class='row'>
+            <div class="col-6">
+                <h1>{{ para.marka }} {{ para.model_buta }}</h1>
+            </div>
+            <div class="col-6">
+                 <a href="#" class="btn btn-danger float-right">Usuń</a>
+                 <a href="{% url 'magazyn_update' para.pk %}" class="btn btn-primary float-right">Edytuj</a>
+            </div>
+        </div>
+        
         <div class="row card-body">
             <div class="col-lg-3 col-md-5 col-sm-12 card detail-card">
                 <p><b>Marka:</b>&nbsp;&nbsp;{{ para.marka }}</p>
