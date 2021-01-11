@@ -98,3 +98,20 @@ class MagazynTests(TestCase):
         self.assertContains(response, '1100')
         self.assertTemplateUsed(response, 'magazyn_create.html')
         self.assertNotContains(response, "Tego nie powinno tu być!")
+
+    def test_magazyn_update_view(self):
+        response = self.client.post(reverse('magazyn_update', args=str(self.buty.pk)), {
+            'kolor' : 'Red',
+            'rozmiar' : '45 1/2',
+            'szacowana_wartosc': 1500,
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Adidas')
+        self.assertContains(response, 'Red')
+        self.assertContains(response, '45 1/2')
+        self.assertContains(response, '1500')
+
+    def test_magazyn_delete_view(self):
+        response = self.client.get(reverse('magazyn_delete', args=[str(self.buty.pk)]))
+        self.assertEqual(response.status_code, 200)
+        # I dont know why pk is 6
