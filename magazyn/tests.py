@@ -67,3 +67,34 @@ class MagazynTests(TestCase):
         self.assertContains(response, 'Adidas')
         self.assertNotContains(response, 'Tego nie powinno tu być na 100%')
         self.assertTemplateUsed(response, 'magazyn_detail.html')
+
+    def test_magazyn_create_view(self):
+        response = self.client.post(reverse('magazyn_create'),{
+            'marka': 'Adidas',
+            'model_buta' : 'Yeezy',
+            'typ' : 'Frozen',
+            'kolor' : 'Yellow',
+            'rozmiar' : '43 1/3',
+            'data_zakupu': '2020-05-09',
+            'cena_zakupu': 899,
+            'szacowana_wartosc': 1200,
+            'uwagi': 'super',
+            'status': "W magazynie",
+            'gdzie_kupione': 'AdidasApp',
+            'data_sprzedazy': '2020-12-19',
+            'cena_sprzedazy': '1100',
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Adidas')
+        self.assertContains(response, 'Yeezy')
+        self.assertContains(response, 'Frozen')
+        self.assertContains(response, 'Yellow')
+        self.assertContains(response, '43 1/3')
+        self.assertContains(response, '2020-05-09')
+        self.assertContains(response, '899')
+        self.assertContains(response, '1200')
+        self.assertContains(response, 'AdidasApp')
+        self.assertContains(response, '2020-12-19')
+        self.assertContains(response, '1100')
+        self.assertTemplateUsed(response, 'magazyn_create.html')
+        self.assertNotContains(response, "Tego nie powinno tu być!")
