@@ -1,5 +1,6 @@
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
 from .models import Buty
 from .filters import ButyFilter
 
@@ -36,3 +37,10 @@ class MagazynUpdateView(UpdateView):
     model = Buty
     fields = "__all__"
     template_name='magazyn_update.html'
+
+
+class MagazynDeleteView(DeleteView):
+    model = Buty
+    context_object_name = 'para'
+    template_name='magazyn_delete.html'
+    success_url = reverse_lazy('magazyn_list')
