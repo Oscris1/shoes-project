@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # 3rd party
+    'django_filters',
+
     # local
     'users.apps.UsersConfig',
     'magazyn.apps.MagazynConfig',

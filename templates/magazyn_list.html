@@ -5,31 +5,38 @@
 {% block title %} Magazyn {% endblock title %}
 
 {% block content %}
-<div class="container-fluid main-site">
-    <h1>Lista butów</h1>
+    <div class="container-fluid main-site">
+        <h1>Lista butów</h1>
 
-    
-     
-    <div class="card card-body">
-        <table class="table">
-            <tr>
-                <th>Model</th>
-                <th>Rozmiar</th>
-                <th>Data zakupu</th>
-                <th>Status</th>
-            </tr>
-            
-           {% for para in buty %}
+        <div class="card card-body">
+                <form method="get">
+                    {{my_filter.form}}
+
+                    <button class="btn btn-dark btn-sm" type="submit">Szukaj</button>
+                </form>
+            </div>
+            <br>
+
+        <div class="card card-body">
+            <table class="table">
                 <tr>
-                    <td><a href="{% url 'magazyn_detail' para.pk %}">{{ para.marka }} {{ para.model_buta }} {{ para.typ }} {{ para.kolor }}</a></td>
-                    <td>{{para.rozmiar}}</td>
-                    <td>{{para.data_zakupu}}</td>
-                    <td>{{para.status}}</td>
+                    <th>Model</th>
+                    <th>Rozmiar</th>
+                    <th>Data zakupu</th>
+                    <th>Status</th>
                 </tr>
-           {% endfor %}
+                
+            {% for para in buty %}
+                    <tr>
+                        <td><a href="{% url 'magazyn_detail' para.pk %}">{{ para.marka }} {{ para.model_buta }} {{ para.typ }} {{ para.kolor }}</a></td>
+                        <td>{{para.rozmiar}}</td>
+                        <td>{{para.data_zakupu}}</td>
+                        <td>{{para.status}}</td>
+                    </tr>
+            {% endfor %}
 
-        </table>
-    
-    
-</div>
+            </table>
+        
+        
+    </div>
 {% endblock content %}
