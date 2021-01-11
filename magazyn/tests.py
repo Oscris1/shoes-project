@@ -62,7 +62,7 @@ class MagazynTests(TestCase):
         self.assertTemplateUsed(response, 'magazyn_list.html')
 
     def test_magazyn_detail_view(self):
-        response = self.client.get(f'/magazyn/{self.buty.pk}/')
+        response = self.client.get(self.buty.get_absolute_url())
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Adidas')
         self.assertNotContains(response, 'Tego nie powinno tu być na 100%')

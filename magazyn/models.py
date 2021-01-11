@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 class Marka(models.Model):
@@ -113,3 +114,7 @@ class Buty(models.Model):
 
     def __str__(self):
         return self.marka.name + " " +  self.model_buta.name
+
+    def get_absolute_url(self):
+        return reverse("magazyn_detail", kwargs={"pk": self.pk})
+    

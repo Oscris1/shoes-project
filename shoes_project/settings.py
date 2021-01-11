@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     # 3rd party
     'django_filters',
+    'crispy_forms',
 
     # local
     'users.apps.UsersConfig',
@@ -137,6 +138,9 @@ STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
+
+# crispy forms
+CRISPY_TEMPLATE_PACK = 'uni_form'
 
 # Authentication
 

@@ -28,7 +28,7 @@
                 
             {% for para in buty %}
                     <tr>
-                        <td><a href="{% url 'magazyn_detail' para.pk %}">{{ para.marka }} {{ para.model_buta }} {{ para.typ }} {{ para.kolor }}</a></td>
+                        <td><a href="{{ para.get_absolute_url }}">{{ para.marka }} {{ para.model_buta }} {{ para.typ }} {{ para.kolor }}</a></td>
                         <td>{{para.rozmiar}}</td>
                         <td>{{para.data_zakupu}}</td>
                         <td>{{para.status}}</td>

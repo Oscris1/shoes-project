@@ -1,4 +1,5 @@
 from django.views.generic import ListView, DetailView
+from django.views.generic.edit import CreateView 
 from .models import Buty
 from .filters import ButyFilter
 
@@ -18,10 +19,14 @@ class MagazynListView(ListView):
         context["my_filter"] = ButyFilter()
         return context
     
-
-
-        
+ 
 class MagazynDetailView(DetailView):
     model = Buty
     context_object_name = 'para'
     template_name='magazyn_detail.html'
+
+
+class MagazynCreateView(CreateView):
+    model = Buty
+    fields = "__all__"
+    template_name='magazyn_create.html'
