@@ -25,4 +25,5 @@ urlpatterns = [
 
     # Local apps
     path('magazyn/', include('magazyn.urls')),
+    path('', include('pages.urls')),
 ]
