@@ -6,7 +6,7 @@
     <div class='container-fluid main-site'>
         <div class='row'>
             <div class="col-6">
-                <h1>{{ para.marka }} {{ para.model_buta }}</h1>
+                <h1>{{ para.marka }} {{ para.model_buta }} {{ para.typ }} {{ para.rozmiar }}</h1>
             </div>
             <div class="col-6">
                  <a href="{% url 'magazyn_delete' para.pk %}" class="btn btn-danger float-right">Usuń</a>
