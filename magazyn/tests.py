@@ -53,6 +53,7 @@ class MagazynTests(TestCase):
             data_sprzedazy='2021-01-19',
             cena_sprzedazy='490',
         )
+
     # Testy dodawania do bazy danych:
     def test_marka_listening(self):
         self.assertEqual(f'{self.marka.name}', 'Adidas'),
@@ -75,27 +76,64 @@ class MagazynTests(TestCase):
         self.assertEqual(f'{self.buty.gdzie_kupione}', 'AdidasApp'),
         self.assertEqual(f'{self.buty.data_sprzedazy}', '2021-01-19'),
         self.assertEqual(f'{self.buty.cena_sprzedazy}', '490'),
-    
+
     # Testy widoków:
+
+    # List view tests
     def test_magazyn_list_view_access(self):
         response = self.client.get(reverse('magazyn_list'))
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, expected_url=('/accounts/login/?next=/magazyn/'))
+
+    def test_magazyn_list_view_access_standard_user(self):
+        self.client.login(email='standard_user@email.com', password='testpass123')
+        response = self.client.get(reverse('magazyn_list'))
+        self.assertEqual(response.status_code, 403)
+        self.assertTemplateUsed(response, '403.html')
+
+    def test_magazyn_list_view_access_special_user(self):
+        self.client.login(email='special_user@email.com', password='testpass123')
+        response = self.client.get(reverse('magazyn_list'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Adidas')
-        self.assertNotContains(response, 'Tego nie powinno tu być na 100%')
         self.assertTemplateUsed(response, 'magazyn_list.html')
 
+    def test_magazyn_list_view_access_super_user(self):
+        self.client.login(email='super_user@email.com', password='testpass123')
+        response = self.client.get(reverse('magazyn_list'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'magazyn_list.html')
+
+
+    # Detail views tests
     def test_magazyn_detail_view_access(self):
         response = self.client.get(self.buty.get_absolute_url())
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, expected_url=('/accounts/login/?next=/magazyn/1/'))
+
+    def test_magazyn_detail_view_access_standard_user(self):
+        self.client.login(email='standard_user@email.com', password='testpass123')
+        response = self.client.get(self.buty.get_absolute_url())
+        self.assertEqual(response.status_code, 403)
+        self.assertTemplateUsed(response, '403.html')
+
+    def test_magazyn_detail_view_access_special_user(self):
+        self.client.login(email='special_user@email.com', password='testpass123')
+        response = self.client.get(self.buty.get_absolute_url())
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Adidas')
-        self.assertNotContains(response, 'Tego nie powinno tu być na 100%')
         self.assertTemplateUsed(response, 'magazyn_detail.html')
+
+    def test_magazyn_detail_view_access_super_user(self):
+        self.client.login(email='super_user@email.com', password='testpass123')
+        response = self.client.get(self.buty.get_absolute_url())
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'magazyn_detail.html')
+
 
     # Create views tests
     def test_magazyn_create_view_access_no_user(self):
         response = self.client.get(reverse('magazyn_create'))
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, expected_url=('/accounts/login/?next=%2Fmagazyn%2Fnowe%2F'))
+        self.assertRedirects(response, expected_url=('/accounts/login/?next=/magazyn/nowe/'))
 
     def test_magazyn_create_view_access_standard_user(self):
         self.client.login(email='standard_user@email.com', password='testpass123')
@@ -115,14 +153,52 @@ class MagazynTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'magazyn_create.html')
 
+
     # Update views tests
-    def test_magazyn_update_view_access(self):
+    def test_magazyn_update_view_access_no_user(self):
+        response = self.client.get(reverse('magazyn_update', kwargs={'pk': self.buty.id}))
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, expected_url=('/accounts/login/?next=/magazyn/1/zmiana/'))
+
+    def test_magazyn_update_view_access_standard_user(self):
+        self.client.login(email='standard_user@email.com', password='testpass123')
+        response = self.client.get(reverse('magazyn_update', kwargs={'pk': self.buty.id}))
+        self.assertEqual(response.status_code, 403)
+        self.assertTemplateUsed(response, '403.html')
+
+    def test_magazyn_update_view_access_special_user(self):
+        self.client.login(email='special_user@email.com', password='testpass123')
         response = self.client.get(reverse('magazyn_update', kwargs={'pk': self.buty.id}))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'magazyn_update.html')
 
-    def test_magazyn_delete_view_access(self):
+    def test_magazyn_update_view_access_super_user(self):
+        self.client.login(email='super_user@email.com', password='testpass123')
+        response = self.client.get(reverse('magazyn_update', kwargs={'pk': self.buty.id}))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'magazyn_update.html')
+
+
+    # Delete views tests
+    def test_magazyn_delete_view_access_no_user(self):
+        response = self.client.get(reverse('magazyn_delete', args=[str(self.buty.pk)]))
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, expected_url=('/accounts/login/?next=/magazyn/1/usuwanie/'))
+        
+    def test_magazyn_delete_view_access_standard_user(self):
+        self.client.login(email='standard_user@email.com', password='testpass123')
+        response = self.client.get(reverse('magazyn_delete', args=[str(self.buty.pk)]))
+        self.assertEqual(response.status_code, 403)
+        self.assertTemplateUsed(response, '403.html')
+
+    def test_magazyn_delete_view_access_special_user(self):
+        self.client.login(email='special_user@email.com', password='testpass123')
         response = self.client.get(reverse('magazyn_delete', args=[str(self.buty.pk)]))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'magazyn_delete.html')
-        
+
+    def test_magazyn_delete_view_access_super_user(self):
+        self.client.login(email='super_user@email.com', password='testpass123')
+        response = self.client.get(reverse('magazyn_delete', args=[str(self.buty.pk)]))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'magazyn_delete.html')

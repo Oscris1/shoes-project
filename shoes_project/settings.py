@@ -151,7 +151,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # Authentication
 AUTH_USER_MODEL = 'users.CustomUser'
-LOGIN_REDIRECT_URL = 'magazyn_list'
+LOGIN_REDIRECT_URL = 'home'
 ACCOUNT_LOGOUT_REDIRECT_URL = 'account_login'
 ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_USERNAME_REQUIRED = True #change to false
