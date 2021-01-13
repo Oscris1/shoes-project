@@ -2,15 +2,15 @@
 
 {% load crispy_forms_tags %}
 
-{% block title %}Sign Up{% endblock title %}
+{% block title %}Załóż konto{% endblock title %}
 
 {% block content %}
 <div class='container-fluid main-site'>
-    <h2>Sign Up</h2>
+    <h2>Załóż konto</h2>
     <form method="post">
         {% csrf_token %}
         {{ form|crispy }}
-        <button class='btn btn-success' type="submit">Sign Up</button>
+        <button class='btn btn-success' type="submit">Załóż konto</button>
     </form>
 </div>
 {% endblock content %}
