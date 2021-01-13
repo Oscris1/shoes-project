@@ -112,6 +112,10 @@ class Buty(models.Model):
     class Meta:
             verbose_name_plural = "Buty"
 
+            permissions = [
+                ("magazyn_admin", "User can do everything in Magazyn app")
+            ]
+
     def __str__(self):
         return self.marka.name + " " +  self.model_buta.name
 

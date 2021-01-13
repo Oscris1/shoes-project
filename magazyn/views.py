@@ -1,5 +1,6 @@
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.urls import reverse_lazy
 from .models import Buty
 from .filters import ButyFilter
@@ -27,10 +28,11 @@ class MagazynDetailView(DetailView):
     template_name='magazyn_detail.html'
 
 
-class MagazynCreateView(CreateView):
+class MagazynCreateView(PermissionRequiredMixin, CreateView):
     model = Buty
     fields = "__all__"
     template_name='magazyn_create.html'
+    permission_required="magazyn.magazyn_admin"
 
 
 class MagazynUpdateView(UpdateView):

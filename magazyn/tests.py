@@ -1,12 +1,33 @@
 from django.test import TestCase, Client
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Permission
+from django.urls import reverse
 
 from .models import Marka, ModelButa, Buty
-from django.urls import reverse
 
 # Create your tests here.
 class MagazynTests(TestCase):
     @classmethod
     def setUpTestData(cls):
+        
+        cls.super_user = get_user_model().objects.create_superuser(
+            email='super_user@email.com',
+            username='super_user',
+            password='testpass123',
+        )
+        
+        cls.special_user = get_user_model().objects.create_user(
+            email='special_user@email.com',
+            username='special_user',
+            password='testpass123',
+        ) 
+        cls.special_user.user_permissions.add(Permission.objects.get(codename='magazyn_admin'))
+
+        cls.standard_user = get_user_model().objects.create_user(
+            email='standard_user@email.com',
+            username='standard_user',
+            password='testpass123',
+        )
         
         cls.marka = Marka.objects.create(
             name = 'Adidas',
@@ -70,11 +91,31 @@ class MagazynTests(TestCase):
         self.assertNotContains(response, 'Tego nie powinno tu być na 100%')
         self.assertTemplateUsed(response, 'magazyn_detail.html')
 
-    def test_magazyn_create_view_access(self):
+    # Create views tests
+    def test_magazyn_create_view_access_no_user(self):
+        response = self.client.get(reverse('magazyn_create'))
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, expected_url=('/accounts/login/?next=%2Fmagazyn%2Fnowe%2F'))
+
+    def test_magazyn_create_view_access_standard_user(self):
+        self.client.login(email='standard_user@email.com', password='testpass123')
+        response = self.client.get(reverse('magazyn_create'))
+        self.assertEqual(response.status_code, 403)
+        self.assertTemplateUsed(response, '403.html')
+
+    def test_magazyn_create_view_access_special_user(self):
+        self.client.login(email='special_user@email.com', password='testpass123')
         response = self.client.get(reverse('magazyn_create'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'magazyn_create.html')
 
+    def test_magazyn_create_view_access_super_user(self):
+        self.client.login(email='super_user@email.com', password='testpass123')
+        response = self.client.get(reverse('magazyn_create'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'magazyn_create.html')
+
+    # Update views tests
     def test_magazyn_update_view_access(self):
         response = self.client.get(reverse('magazyn_update', kwargs={'pk': self.buty.id}))
         self.assertEqual(response.status_code, 200)
