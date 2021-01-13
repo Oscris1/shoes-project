@@ -4,8 +4,10 @@ body {
 
 .main-site {
     padding: 2% 5% 2% 5%;
+    font-family: 'Merriweather', serif;
 }
 .main-site h1 {
+    font-family: 'Raleway', sans-serif;
     margin-bottom: 2%;
 }
 
