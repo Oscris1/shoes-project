@@ -95,13 +95,13 @@ class MagazynTests(TestCase):
         self.client.login(email='special_user@email.com', password='testpass123')
         response = self.client.get(reverse('magazyn_list'))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'magazyn_list.html')
+        self.assertTemplateUsed(response, 'magazyn/magazyn_list.html')
 
     def test_magazyn_list_view_access_super_user(self):
         self.client.login(email='super_user@email.com', password='testpass123')
         response = self.client.get(reverse('magazyn_list'))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'magazyn_list.html')
+        self.assertTemplateUsed(response, 'magazyn/magazyn_list.html')
 
 
     # Detail views tests
@@ -120,13 +120,13 @@ class MagazynTests(TestCase):
         self.client.login(email='special_user@email.com', password='testpass123')
         response = self.client.get(self.buty.get_absolute_url())
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'magazyn_detail.html')
+        self.assertTemplateUsed(response, 'magazyn/magazyn_detail.html')
 
     def test_magazyn_detail_view_access_super_user(self):
         self.client.login(email='super_user@email.com', password='testpass123')
         response = self.client.get(self.buty.get_absolute_url())
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'magazyn_detail.html')
+        self.assertTemplateUsed(response, 'magazyn/magazyn_detail.html')
 
 
     # Create views tests
@@ -145,13 +145,13 @@ class MagazynTests(TestCase):
         self.client.login(email='special_user@email.com', password='testpass123')
         response = self.client.get(reverse('magazyn_create'))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'magazyn_create.html')
+        self.assertTemplateUsed(response, 'magazyn/magazyn_create.html')
 
     def test_magazyn_create_view_access_super_user(self):
         self.client.login(email='super_user@email.com', password='testpass123')
         response = self.client.get(reverse('magazyn_create'))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'magazyn_create.html')
+        self.assertTemplateUsed(response, 'magazyn/magazyn_create.html')
 
 
     # Update views tests
@@ -170,13 +170,13 @@ class MagazynTests(TestCase):
         self.client.login(email='special_user@email.com', password='testpass123')
         response = self.client.get(reverse('magazyn_update', kwargs={'pk': self.buty.id}))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'magazyn_update.html')
+        self.assertTemplateUsed(response, 'magazyn/magazyn_update.html')
 
     def test_magazyn_update_view_access_super_user(self):
         self.client.login(email='super_user@email.com', password='testpass123')
         response = self.client.get(reverse('magazyn_update', kwargs={'pk': self.buty.id}))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'magazyn_update.html')
+        self.assertTemplateUsed(response, 'magazyn/magazyn_update.html')
 
 
     # Delete views tests
@@ -195,10 +195,10 @@ class MagazynTests(TestCase):
         self.client.login(email='special_user@email.com', password='testpass123')
         response = self.client.get(reverse('magazyn_delete', args=[str(self.buty.pk)]))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'magazyn_delete.html')
+        self.assertTemplateUsed(response, 'magazyn/magazyn_delete.html')
 
     def test_magazyn_delete_view_access_super_user(self):
         self.client.login(email='super_user@email.com', password='testpass123')
         response = self.client.get(reverse('magazyn_delete', args=[str(self.buty.pk)]))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'magazyn_delete.html')
+        self.assertTemplateUsed(response, 'magazyn/magazyn_delete.html')
