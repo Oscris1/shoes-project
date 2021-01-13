@@ -10,19 +10,18 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-light">
         <a class="navbar-brand" href="{% url 'home' %}">Buciki</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav mr-auto">
+            {% if user.is_superuser or perms.magazyn.magazyn_admin %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'magazyn_list' %}">Magazyn</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'magazyn_create' %}">+ Utwórz buty</a>
-            </li>
+            {% endif %}
           </ul>
           <ul class="navbar-nav ml-auto">
             {% if user.is_authenticated %}
