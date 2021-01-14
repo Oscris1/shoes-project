@@ -8,7 +8,7 @@
 
 {% block content %}
 <div class='container-fluid main-site'>
-    <h1>{{ para.marka }} {{ para.model_buta }} {{ para.typ }} {{ para.rozmiar }}</h1>
+    <h1>{{ para.marka }} {{ para.model_buta }} {{ para.typ }}<br> {{ para.rozmiar }}</h1>
     <form method="post" class="uniForm">
         {% csrf_token %}
         {{ form|crispy }}
