@@ -13,3 +13,4 @@ przejść do folderu w którym jest manage.py i użyć komend
 > docker-compose exec web python manage.py migrate
 > docker-compose exec web python manage.py createsuperuser
 Wejdź na http://127.0.0.1:8000/accounts/login/ i zaloguj się kontem admina
+Kliknij opcje Magazyn z nevbara
