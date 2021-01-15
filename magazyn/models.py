@@ -105,8 +105,6 @@ class Buty(models.Model):
     uwagi = models.CharField(max_length=250, null=True, blank=True)
     status = models.CharField(max_length=200, choices=STATUS)
     gdzie_kupione = models.CharField(max_length=50, null=True)
-    data_sprzedazy = models.DateField(null=True, blank=True)
-    cena_sprzedazy = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
 
     class Meta:
             verbose_name_plural = "Buty"
@@ -121,3 +119,18 @@ class Buty(models.Model):
     def get_absolute_url(self):
         return reverse("magazyn_detail", kwargs={"pk": self.pk})
     
+
+class Sprzedane(models.Model):
+    buty = models.OneToOneField(
+        Buty,
+        on_delete=models.CASCADE,
+        primary_key=True
+    )
+    data_sprzedazy = models.DateField(null=True, blank=True)
+    cena_sprzedazy = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
+
+    class Meta:
+            verbose_name_plural = "Sprzedane"
+
+    def __str__(self):
+        return self.buty.__str__()

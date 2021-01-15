@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
 from django.urls import reverse
 
-from .models import Marka, ModelButa, Buty
+from .models import Marka, ModelButa, Buty, Sprzedane
 
 # Create your tests here.
 class MagazynTests(TestCase):
@@ -49,6 +49,10 @@ class MagazynTests(TestCase):
             uwagi='brak',
             status="W magazynie",
             gdzie_kupione='AdidasApp',
+        )
+
+        cls.sprzedane = Sprzedane.objects.create(
+            buty= cls.buty,
             data_sprzedazy='2021-01-19',
             cena_sprzedazy='490',
         )
@@ -72,8 +76,8 @@ class MagazynTests(TestCase):
         self.assertEqual(f'{self.buty.uwagi}', 'brak'),
         self.assertEqual(f'{self.buty.status}', 'W magazynie'),
         self.assertEqual(f'{self.buty.gdzie_kupione}', 'AdidasApp'),
-        self.assertEqual(f'{self.buty.data_sprzedazy}', '2021-01-19'),
-        self.assertEqual(f'{self.buty.cena_sprzedazy}', '490'),
+        self.assertEqual(f'{self.buty.sprzedane.data_sprzedazy}', '2021-01-19'),
+        self.assertEqual(f'{self.buty.sprzedane.cena_sprzedazy}', '490'),
 
     # Testy widoków:
 
