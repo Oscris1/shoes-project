@@ -145,3 +145,18 @@ class Sprzedane(BazowaPrzesylka):
 
     def __str__(self):
         return self.buty.__str__()
+
+
+class Zwrot(BazowaPrzesylka):
+    buty = models.OneToOneField(
+        Buty,
+        on_delete=models.CASCADE,
+        primary_key=True
+    )
+    data_zwrotu = models.DateField(null=True, blank=True)
+
+    class Meta:
+        verbose_name_plural = "Zwrot"
+
+    def __str__(self):
+        return self.buty.__str__()
