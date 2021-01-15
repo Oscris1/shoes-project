@@ -120,17 +120,28 @@ class Buty(models.Model):
         return reverse("magazyn_detail", kwargs={"pk": self.pk})
     
 
-class Sprzedane(models.Model):
+class BazowaPrzesylka(models.Model):
+    BOOL_CHOICES = ((True, 'Tak'), (False, 'Nie'))
+    wplynely_pieniadze = models.BooleanField(verbose_name="Wpłynęły pieniądze", choices=BOOL_CHOICES, default=False)
+    data_przesylki = models.DateField(verbose_name="Data przesyłki", null=True, blank=True)
+    sledzenie_przesylki = models.URLField(verbose_name="Link do śledzenia przesyłki", null=True, blank=True)
+
+    class Meta:
+        abstract = True
+
+
+class Sprzedane(BazowaPrzesylka):
     buty = models.OneToOneField(
         Buty,
         on_delete=models.CASCADE,
         primary_key=True
     )
     data_sprzedazy = models.DateField(null=True, blank=True)
-    cena_sprzedazy = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
+    cena_sprzedazy = models.DecimalField(max_digits=8, decimal_places=2,null=True, blank=True)
+    komu_sprzedane = models.CharField(max_length=50, null=True, blank=True)
 
     class Meta:
-            verbose_name_plural = "Sprzedane"
+        verbose_name_plural = "Sprzedane"
 
     def __str__(self):
         return self.buty.__str__()
