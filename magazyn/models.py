@@ -98,7 +98,6 @@ class Buty(models.Model):
         on_delete=models.PROTECT,
         )
     typ = models.CharField(max_length=50)
-    kolor = models.CharField(max_length=50)
     rozmiar = models.CharField(max_length=7, choices=ROZMIAR)
     data_zakupu = models.DateField(null=True)
     cena_zakupu = models.DecimalField(max_digits=8, decimal_places=2)
