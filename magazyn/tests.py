@@ -3,7 +3,13 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
 from django.urls import reverse
 
-from .models import Marka, ModelButa, Buty, Sprzedane
+from .models import (
+    Marka,
+    ModelButa,
+    Buty,
+    Sprzedane,
+    Zwrot,
+)
 
 # Create your tests here.
 class MagazynTests(TestCase):
@@ -52,9 +58,21 @@ class MagazynTests(TestCase):
         )
 
         cls.sprzedane = Sprzedane.objects.create(
-            buty= cls.buty,
+            buty=cls.buty,
             data_sprzedazy='2021-01-19',
             cena_sprzedazy='490',
+            komu_sprzedane='Andrzej',
+            wplynely_pieniadze=True,
+            data_przesylki='2021-01-23',
+            sledzenie_przesylki='https://www.dhl.com/pl-pl/home.html',
+        )
+
+        cls.zwrot = Zwrot.objects.create(
+            buty= cls.buty,
+            data_zwrotu='2021-01-21',
+            wplynely_pieniadze=True,
+            data_przesylki='2021-01-23',
+            sledzenie_przesylki='https://www.dhl.com/pl-pl/home.html',
         )
 
     # Testy dodawania do bazy danych:
@@ -78,6 +96,22 @@ class MagazynTests(TestCase):
         self.assertEqual(f'{self.buty.gdzie_kupione}', 'AdidasApp'),
         self.assertEqual(f'{self.buty.sprzedane.data_sprzedazy}', '2021-01-19'),
         self.assertEqual(f'{self.buty.sprzedane.cena_sprzedazy}', '490'),
+
+    def test_sprzedane_listening(self):
+        self.assertEqual(f'{self.sprzedane.buty.marka.name}', 'Adidas'),
+        self.assertEqual(f'{self.sprzedane.data_sprzedazy}', '2021-01-19'),
+        self.assertEqual(f'{self.sprzedane.cena_sprzedazy}', '490'),
+        self.assertEqual(f'{self.sprzedane.komu_sprzedane}', 'Andrzej'),
+        self.assertEqual(f'{self.sprzedane.wplynely_pieniadze}', 'True'),
+        self.assertEqual(f'{self.sprzedane.data_przesylki}', '2021-01-23'),
+        self.assertEqual(f'{self.sprzedane.sledzenie_przesylki}', 'https://www.dhl.com/pl-pl/home.html'),
+
+    def test_zwrot_listening(self):
+        self.assertEqual(f'{self.zwrot.buty.marka.name}', 'Adidas'),
+        self.assertEqual(f'{self.zwrot.data_zwrotu}', '2021-01-21'),
+        self.assertEqual(f'{self.zwrot.wplynely_pieniadze}', 'True'),
+        self.assertEqual(f'{self.zwrot.data_przesylki}', '2021-01-23'),
+        self.assertEqual(f'{self.zwrot.sledzenie_przesylki}', 'https://www.dhl.com/pl-pl/home.html'),
 
     # Testy widoków:
 
