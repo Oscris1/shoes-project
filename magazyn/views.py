@@ -2,7 +2,7 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.urls import reverse_lazy
-from .models import Buty, Zwrot
+from .models import Buty, Zwrot, Sprzedane
 from .filters import ButyFilter
 
 # Create your views here.
@@ -91,7 +91,7 @@ class ZwrotListView(PermissionRequiredMixin, ListView):
         return context
 
 
-class DokonajZwrotuCreateVeiw(PermissionRequiredMixin, CreateView):
+class DokonajZwrotuCreateView(PermissionRequiredMixin, CreateView):
     model = Zwrot
     fields = ['wplynely_pieniadze', 'data_przesylki', 'sledzenie_przesylki', 'data_zwrotu']
     context_object_name = 'zwrot'
@@ -102,5 +102,20 @@ class DokonajZwrotuCreateVeiw(PermissionRequiredMixin, CreateView):
         form.instance.pk = self.kwargs['pk']
         buty = Buty.objects.get(pk=self.kwargs['pk'])
         buty.status='zwrot'
+        buty.save()
+        return super().form_valid(form)
+
+
+class DokonajSprzedazyCreateView(PermissionRequiredMixin, CreateView):
+    model = Sprzedane
+    fields = ['data_sprzedazy', 'cena_sprzedazy', 'komu_sprzedane', 'wplynely_pieniadze', 'data_przesylki', 'sledzenie_przesylki']
+    context_object_name = 'zwrot'
+    template_name='magazyn/zwrot_create.html'
+    permission_required="magazyn.magazyn_admin"
+
+    def form_valid(self, form):
+        form.instance.pk = self.kwargs['pk']
+        buty = Buty.objects.get(pk=self.kwargs['pk'])
+        buty.status='sprzedano'
         buty.save()
         return super().form_valid(form)

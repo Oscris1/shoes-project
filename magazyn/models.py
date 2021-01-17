@@ -146,6 +146,9 @@ class Sprzedane(BazowaPrzesylka):
     def __str__(self):
         return self.buty.__str__()
 
+    def get_absolute_url(self):
+        return reverse("magazyn_detail", kwargs={"pk": self.pk})
+
 
 class Zwrot(BazowaPrzesylka):
     buty = models.OneToOneField(

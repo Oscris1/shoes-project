@@ -7,7 +7,8 @@ from .views import (
     MagazynDeleteView,
     SprzedaneListView,
     ZwrotListView,
-    DokonajZwrotuCreateVeiw,
+    DokonajZwrotuCreateView,
+    DokonajSprzedazyCreateView,
 )
 
 urlpatterns = [
@@ -18,5 +19,6 @@ urlpatterns = [
     path('<int:pk>/', MagazynDetailView.as_view(), name='magazyn_detail'),
     path('<int:pk>/zmiana/', MagazynUpdateView.as_view(), name='magazyn_update'),
     path('<int:pk>/usuwanie/', MagazynDeleteView.as_view(), name='magazyn_delete'),
-    path('<int:pk>/zwroc_buty/', DokonajZwrotuCreateVeiw.as_view(), name='zwrot_create'),
+    path('<int:pk>/zwroc_buty/', DokonajZwrotuCreateView.as_view(), name='zwrot_create'),
+    path('<int:pk>/sprzedaj_buty/', DokonajSprzedazyCreateView.as_view(), name='sprzedaz_create'),
 ]
