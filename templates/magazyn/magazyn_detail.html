@@ -11,6 +11,9 @@
             <div class="col-6">
                  <a href="{% url 'magazyn_delete' para.pk %}" class="btn btn-danger float-right">Usuń</a>
                  <a href="{% url 'magazyn_update' para.pk %}" class="btn btn-primary float-right">Edytuj</a>
+                 {% if para.status == "w magazynie" %}
+                    <a href="{% url 'zwrot_create' para.pk %}" class="btn btn-dark float-right">Zwróć</a>
+                 {% endif %}
             </div>
         </div>
         
