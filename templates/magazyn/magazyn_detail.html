@@ -45,7 +45,10 @@
                     <p><b>Śledzenie przesyłki:</b>&nbsp;&nbsp;{{ para.sprzedane.sledzenie_przesylki }}</p>
 
                 {% elif para.status == "zwrot" %}
-                    <p>zwrot</p>    
+                    <p><b>Data zwrotu:</b>&nbsp;&nbsp;{{ para.zwrot.data_zwrotu }}</p>
+                    <p><b>Wpłynęły pięniądze:</b>&nbsp;&nbsp;{{ para.zwrot.get_wplynely_pieniadze_display }}</p>
+                    <p><b>Data przesyłki:</b>&nbsp;&nbsp;{{ para.zwrot.data_przesylki }}</p>
+                    <p><b>Śledzenie przesyłki:</b>&nbsp;&nbsp;{{ para.zwrot.sledzenie_przesylki }}</p>   
                 {% endif %}
                 </div>
         </div>
