@@ -20,3 +20,8 @@ body {
     padding-left: 5%;
     padding-right: 5%;
 }
+
+.btn-detail {
+    margin: 2% 1%;
+    padding: 2% 4%;
+}

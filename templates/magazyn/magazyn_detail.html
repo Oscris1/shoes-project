@@ -9,11 +9,11 @@
                 <h1>{{ para.marka }} {{ para.model_buta }} {{ para.typ }}<br> {{ para.rozmiar }}</h1>
             </div>
             <div class="col-6">
-                 <a href="{% url 'magazyn_delete' para.pk %}" class="btn btn-danger float-right">Usuń</a>
-                 <a href="{% url 'magazyn_update' para.pk %}" class="btn btn-primary float-right">Edytuj</a>
+                 <a href="{% url 'magazyn_delete' para.pk %}" class="btn btn-danger float-right btn-detail">Usuń</a>
+                 <a href="{% url 'magazyn_update' para.pk %}" class="btn btn-primary float-right btn-detail">Edytuj</a>
                  {% if para.status == "w magazynie" %}
-                    <a href="#" class="btn btn-secondary float-right">Sprzedaj</a>
-                    <a href="{% url 'zwrot_create' para.pk %}" class="btn btn-dark float-right">Zwróć</a>
+                    <a href="#" class="btn btn-secondary float-right btn-detail">Sprzedaj</a>
+                    <a href="{% url 'zwrot_create' para.pk %}" class="btn btn-dark float-right btn-detail">Zwróć</a>
                  {% endif %}
             </div>
         </div>
