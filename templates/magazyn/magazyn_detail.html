@@ -35,11 +35,19 @@
             <div class="col-lg-1"></div>
 
             <div class="col-lg-3 col-md-12 card detail-card">
-                
-                <p><b>Data sprzedaży:</b>&nbsp;&nbsp;{{ para.sprzedane.data_sprzedazy }}</p>
-                <p><b>Cena sprzedaży:</b>&nbsp;&nbsp;{{ para.sprzedane.cena_sprzedazy }} zł</p>
                 <p><b>Uwagi:</b>&nbsp;&nbsp;{{ para.uwagi }}</p>
-            </div>
+                {% if para.status == "sprzedano" %}
+                    <p><b>Data sprzedaży:</b>&nbsp;&nbsp;{{ para.sprzedane.data_sprzedazy }}</p>
+                    <p><b>Cena sprzedaży:</b>&nbsp;&nbsp;{{ para.sprzedane.cena_sprzedazy }}</p>
+                    <p><b>Komu sprzedane:</b>&nbsp;&nbsp;{{ para.sprzedane.komu_sprzedane }}</p>
+                    <p><b>Wpłynęły pięniądze:</b>&nbsp;&nbsp;{{ para.sprzedane.get_wplynely_pieniadze_display }}</p>
+                    <p><b>Data przesyłki:</b>&nbsp;&nbsp;{{ para.sprzedane.data_przesylki }}</p>
+                    <p><b>Śledzenie przesyłki:</b>&nbsp;&nbsp;{{ para.sprzedane.sledzenie_przesylki }}</p>
+
+                {% elif para.status == "zwrot" %}
+                    <p>zwrot</p>    
+                {% endif %}
+                </div>
         </div>
     </div>
 {% endblock content %}
