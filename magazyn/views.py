@@ -110,7 +110,7 @@ class DokonajSprzedazyCreateView(PermissionRequiredMixin, CreateView):
     model = Sprzedane
     fields = ['data_sprzedazy', 'cena_sprzedazy', 'komu_sprzedane', 'wplynely_pieniadze', 'data_przesylki', 'sledzenie_przesylki']
     context_object_name = 'zwrot'
-    template_name='magazyn/zwrot_create.html'
+    template_name='magazyn/sprzedaz_create.html'
     permission_required="magazyn.magazyn_admin"
 
     def form_valid(self, form):
