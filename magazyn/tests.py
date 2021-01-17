@@ -115,7 +115,7 @@ class MagazynTests(TestCase):
 
     # Testy widoków:
 
-    # List view tests
+    # Magazyn list view tests
     def test_magazyn_list_view_access(self):
         response = self.client.get(reverse('magazyn_list'))
         self.assertEqual(response.status_code, 302)
@@ -238,3 +238,27 @@ class MagazynTests(TestCase):
         response = self.client.get(reverse('magazyn_delete', args=[str(self.buty.pk)]))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'magazyn/magazyn_delete.html')
+
+    # Sprzedane list view tests
+    def test_sprzedane_list_view_access(self):
+        response = self.client.get(reverse('sprzedane_list'))
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, expected_url=('/accounts/login/?next=/magazyn/sprzedane/'))
+
+    def test_sprzedane_list_view_access_standard_user(self):
+        self.client.login(email='standard_user@email.com', password='testpass123')
+        response = self.client.get(reverse('sprzedane_list'))
+        self.assertEqual(response.status_code, 403)
+        self.assertTemplateUsed(response, '403.html')
+
+    def test_sprzedane_list_view_access_special_user(self):
+        self.client.login(email='special_user@email.com', password='testpass123')
+        response = self.client.get(reverse('sprzedane_list'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'magazyn/magazyn_list.html')
+
+    def test_sprzedane_list_view_access_super_user(self):
+        self.client.login(email='super_user@email.com', password='testpass123')
+        response = self.client.get(reverse('sprzedane_list'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'magazyn/magazyn_list.html')
