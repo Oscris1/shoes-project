@@ -286,3 +286,27 @@ class MagazynTests(TestCase):
         response = self.client.get(reverse('zwrot_list'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'magazyn/magazyn_list.html')
+
+     # Dokonaj Zwrotu create view test
+    def test_zwrot_create_view_access_no_user(self):
+        response = self.client.get(reverse('zwrot_create', kwargs={'pk': self.buty.id}))
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, expected_url=('/accounts/login/?next=/magazyn/1/zwroc_buty/'))
+
+    def test_zwrot_create_view_access_standard_user(self):
+        self.client.login(email='standard_user@email.com', password='testpass123')
+        response = self.client.get(reverse('zwrot_create', kwargs={'pk': self.buty.id}))
+        self.assertEqual(response.status_code, 403)
+        self.assertTemplateUsed(response, '403.html')
+
+    def test_zwrot_create_view_access_special_user(self):
+        self.client.login(email='special_user@email.com', password='testpass123')
+        response = self.client.get(reverse('zwrot_create', kwargs={'pk': self.buty.id}))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'magazyn/zwrot_create.html')
+
+    def test_zwrot_create_view_access_super_user(self):
+        self.client.login(email='super_user@email.com', password='testpass123')
+        response = self.client.get(reverse('zwrot_create', kwargs={'pk': self.buty.id}))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'magazyn/zwrot_create.html')
