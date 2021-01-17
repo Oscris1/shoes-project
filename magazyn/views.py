@@ -34,9 +34,23 @@ class MagazynDetailView(PermissionRequiredMixin, DetailView):
 
 class MagazynCreateView(PermissionRequiredMixin, CreateView):
     model = Buty
-    fields = "__all__"
+    fields = [
+        'marka', 
+        'model_buta', 
+        'typ', 
+        'rozmiar', 
+        'data_zakupu', 
+        'cena_zakupu', 
+        'szacowana_wartosc', 
+        'uwagi', 
+        'gdzie_kupione',
+        ]
     template_name='magazyn/magazyn_create.html'
     permission_required="magazyn.magazyn_admin"
+
+    def form_valid(self, form):
+        form.instance.status = "w magazynie"
+        return super().form_valid(form)
 
 
 class MagazynUpdateView(PermissionRequiredMixin, UpdateView):
