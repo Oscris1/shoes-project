@@ -7,6 +7,7 @@ from .views import (
     MagazynDeleteView,
     SprzedaneListView,
     ZwrotListView,
+    DokonajZwrotuCreateVeiw,
 )
 
 urlpatterns = [
@@ -17,4 +18,5 @@ urlpatterns = [
     path('<int:pk>/', MagazynDetailView.as_view(), name='magazyn_detail'),
     path('<int:pk>/zmiana/', MagazynUpdateView.as_view(), name='magazyn_update'),
     path('<int:pk>/usuwanie/', MagazynDeleteView.as_view(), name='magazyn_delete'),
+    path('<int:pk>/zwroc_buty/', DokonajZwrotuCreateVeiw.as_view(), name='zwrot_create'),
 ]

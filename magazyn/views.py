@@ -2,7 +2,7 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.urls import reverse_lazy
-from .models import Buty
+from .models import Buty, Zwrot
 from .filters import ButyFilter
 
 # Create your views here.
@@ -89,3 +89,18 @@ class ZwrotListView(PermissionRequiredMixin, ListView):
         context["my_filter"] = ButyFilter()
         context["list_header"] = "Zwrócone buty"
         return context
+
+
+class DokonajZwrotuCreateVeiw(PermissionRequiredMixin, CreateView):
+    model = Zwrot
+    fields = ['wplynely_pieniadze', 'data_przesylki', 'sledzenie_przesylki', 'data_zwrotu']
+    context_object_name = 'zwrot'
+    template_name='magazyn/zwrot_create.html'
+    permission_required="magazyn.magazyn_admin"
+
+    def form_valid(self, form):
+        form.instance.pk = self.kwargs['pk']
+        buty = Buty.objects.get(pk=self.kwargs['pk'])
+        buty.status='zwrot'
+        buty.save()
+        return super().form_valid(form)

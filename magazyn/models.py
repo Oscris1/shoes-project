@@ -114,7 +114,7 @@ class Buty(models.Model):
             ]
 
     def __str__(self):
-        return self.marka.name + " " +  self.model_buta.name
+        return self.marka.name + " " +  self.model_buta.name + " id: " + str(self.pk)
 
     def get_absolute_url(self):
         return reverse("magazyn_detail", kwargs={"pk": self.pk})
@@ -160,3 +160,6 @@ class Zwrot(BazowaPrzesylka):
 
     def __str__(self):
         return self.buty.__str__()
+    
+    def get_absolute_url(self):
+        return reverse("magazyn_detail", kwargs={"pk": self.pk})
