@@ -13,13 +13,15 @@ class MagazynListView(PermissionRequiredMixin, ListView):
     permission_required="magazyn.magazyn_admin"
     
     def get_queryset(self):
-        qs = self.model.objects.all()
+        qs = super().get_queryset().filter(status='w magazynie')
+        #self.model.objects.all()
         my_filter = ButyFilter(self.request.GET, queryset=qs)
         return my_filter.qs
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["my_filter"] = ButyFilter()
+        context["list_header"] = "Lista butów"
         return context
     
  
@@ -51,3 +53,21 @@ class MagazynDeleteView(PermissionRequiredMixin, DeleteView):
     template_name='magazyn/magazyn_delete.html'
     success_url = reverse_lazy('magazyn_list')
     permission_required="magazyn.magazyn_admin"
+
+
+class SprzedaneListView(PermissionRequiredMixin, ListView):
+    model = Buty
+    context_object_name = 'buty'
+    template_name='magazyn/magazyn_list.html'
+    permission_required="magazyn.magazyn_admin"
+    
+    def get_queryset(self):
+        qs = super().get_queryset().filter(status='sprzedano')
+        my_filter = ButyFilter(self.request.GET, queryset=qs)
+        return my_filter.qs
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["my_filter"] = ButyFilter()
+        context["list_header"] = "Sprzedane buty"
+        return context
