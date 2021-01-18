@@ -57,7 +57,7 @@ class MagazynUpdateView(PermissionRequiredMixin, UpdateView):
     model = Buty
     context_object_name = 'para'
     template_name='magazyn/magazyn_update.html'
-    fields = ['status','szacowana_wartosc', 'uwagi',] #'data_sprzedazy', 'cena_sprzedazy'
+    fields = ['szacowana_wartosc', 'uwagi',]
     permission_required="magazyn.magazyn_admin"
 
 
