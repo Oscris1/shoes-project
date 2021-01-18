@@ -16,7 +16,7 @@
                     <a href="{% url 'zwrot_create' para.pk %}" class="btn btn-dark float-right btn-detail">Zwróć</a>
                 {% elif para.status == "zwrot" %}
                     <a href="#" class="btn btn-secondary float-right btn-detail">Edytuj zwrot</a>
-                    <a href="{% url 'anuluj_zwrot' para.pk %}" class="btn btn-dark float-right btn-detail">Anuluj zwrot</a>
+                    <a href="{% url 'zwrot_delete' para.pk %}" class="btn btn-dark float-right btn-detail">Anuluj zwrot</a>
                 {% endif %}
             </div>
         </div>
