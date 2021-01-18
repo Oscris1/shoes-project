@@ -139,7 +139,7 @@ class DokonajSprzedazyCreateView(PermissionRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class AnulujZwrotDeleteView(DeleteView):
+class AnulujZwrotDeleteView(PermissionRequiredMixin, DeleteView):
     model = Zwrot
     context_object_name = 'para'
     template_name='magazyn/zwrot_delete.html'
