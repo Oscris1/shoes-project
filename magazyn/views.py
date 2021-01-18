@@ -182,6 +182,21 @@ class DokonajSprzedazyCreateView(PermissionRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
+class SprzedaneUpdateView(PermissionRequiredMixin, UpdateView):
+    model = Sprzedane
+    context_object_name = 'sprzedaz'
+    template_name='magazyn/sprzedaz_update.html'
+    fields = [
+        'data_sprzedazy',
+        'cena_sprzedazy',
+        'komu_sprzedane', 
+        'wplynely_pieniadze', 
+        'data_przesylki', 
+        'sledzenie_przesylki',
+        ]
+    permission_required="magazyn.magazyn_admin"
+
+
 class AnulujSprzedazDeleteView(PermissionRequiredMixin, DeleteView):
     model = Sprzedane
     context_object_name = 'sprzedaz'

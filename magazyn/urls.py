@@ -12,6 +12,7 @@ from .views import (
     AnulujZwrotDeleteView,
     AnulujSprzedazDeleteView,
     ZwrotUpdateView,
+    SprzedaneUpdateView,
 )
 
 urlpatterns = [
@@ -31,4 +32,5 @@ urlpatterns = [
     path('sprzedane/', SprzedaneListView.as_view(), name='sprzedane_list'),
     path('<int:pk>/sprzedaj_buty/', DokonajSprzedazyCreateView.as_view(), name='sprzedaz_create'),
     path('<int:pk>/anuluj_sprzedaz/', AnulujSprzedazDeleteView.as_view(), name='sprzedaz_delete'),
+    path('<int:pk>/edytuj_sprzedaz/', SprzedaneUpdateView.as_view(), name='sprzedaz_update'),
 ]

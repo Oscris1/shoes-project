@@ -18,7 +18,7 @@
                     <a href="{% url 'zwrot_update' para.pk %}" class="btn btn-secondary float-right btn-detail">Edytuj zwrot</a>
                     <a href="{% url 'zwrot_delete' para.pk %}" class="btn btn-dark float-right btn-detail">Anuluj zwrot</a>
                     {% elif para.status == "sprzedano" %}
-                    <a href="#" class="btn btn-secondary float-right btn-detail">Edytuj sprzedaż</a>
+                    <a href="{% url 'sprzedaz_update' para.pk %}" class="btn btn-secondary float-right btn-detail">Edytuj sprzedaż</a>
                     <a href="{% url 'sprzedaz_delete' para.pk %}" class="btn btn-dark float-right btn-detail">Anuluj sprzedaż</a>
                 {% endif %}
             </div>
