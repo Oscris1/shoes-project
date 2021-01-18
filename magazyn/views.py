@@ -113,7 +113,9 @@ class DokonajZwrotuCreateView(PermissionRequiredMixin, CreateView):
     permission_required="magazyn.magazyn_admin"
 
     def form_valid(self, form):
-        form.instance.pk = self.kwargs['pk']
+        form.instance.pk = self.kwargs['pk'] # set new Zwrot object pk to given pk
+        
+        # change buty status to "zwrot" on create Zwrot object
         buty = Buty.objects.get(pk=self.kwargs['pk'])
         buty.status='zwrot'
         buty.save()
@@ -128,8 +130,28 @@ class DokonajSprzedazyCreateView(PermissionRequiredMixin, CreateView):
     permission_required="magazyn.magazyn_admin"
 
     def form_valid(self, form):
-        form.instance.pk = self.kwargs['pk']
+        form.instance.pk = self.kwargs['pk']  # set new Sprzedane object pk to given pk
+        
+        # change buty status to "sprzedano" on create Sprzedane object
         buty = Buty.objects.get(pk=self.kwargs['pk'])
         buty.status='sprzedano'
         buty.save()
         return super().form_valid(form)
+
+
+class AnulujZwrotDeleteView(DeleteView):
+    model = Zwrot
+    context_object_name = 'para'
+    template_name='magazyn/zwrot_delete.html'
+    permission_required="magazyn.magazyn_admin"
+
+    def get_success_url(self):
+        # redirect to shoes detail view
+        return reverse_lazy ('magazyn_detail', kwargs={'pk': self.kwargs['pk']})
+
+    def delete(self, request, *args, **kwargs):
+        # change buty status to "w magazynie" on delete
+        buty = Buty.objects.get(pk=self.kwargs['pk'])
+        buty.status='w magazynie'
+        buty.save()
+        return super().delete(request, *args, **kwargs)
