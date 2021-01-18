@@ -1,0 +1,13 @@
+{% extends 'magazyn/base_magazyn.html' %}
+
+{% block content %}
+<div class='container-fluid main-site'>
+    <a class="btn btn-dark" href="{{ para.get_absolute_url }}"><- wróć</a>
+    <h1>{{ para.marka }} {{ para.model_buta }} {{ para.typ }}<br> {{ para.rozmiar }}</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        <p>Jesteś pewny, że chcesz anulować sprzedaż i usunąć dane sprzedaży?</p>
+        <input class="btn btn-danger" type="submit" value="Potwierdzam, anuluj sprzedaż">
+    </form>
+</div>
+{% endblock content %}

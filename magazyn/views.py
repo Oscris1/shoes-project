@@ -107,7 +107,12 @@ class ZwrotListView(PermissionRequiredMixin, ListView):
 
 class DokonajZwrotuCreateView(PermissionRequiredMixin, CreateView):
     model = Zwrot
-    fields = ['wplynely_pieniadze', 'data_przesylki', 'sledzenie_przesylki', 'data_zwrotu']
+    fields = [
+        'wplynely_pieniadze', 
+        'data_przesylki', 
+        'sledzenie_przesylki', 
+        'data_zwrotu',
+        ]
     context_object_name = 'zwrot'
     template_name='magazyn/zwrot_create.html'
     permission_required="magazyn.magazyn_admin"
@@ -122,9 +127,34 @@ class DokonajZwrotuCreateView(PermissionRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
+class AnulujZwrotDeleteView(PermissionRequiredMixin, DeleteView):
+    model = Zwrot
+    context_object_name = 'para'
+    template_name='magazyn/zwrot_delete.html'
+    permission_required="magazyn.magazyn_admin"
+
+    def get_success_url(self):
+        # redirect to shoes detail page
+        return reverse_lazy ('magazyn_detail', kwargs={'pk': self.kwargs['pk']})
+
+    def delete(self, request, *args, **kwargs):
+        # change buty status to "w magazynie" on delete
+        buty = Buty.objects.get(pk=self.kwargs['pk'])
+        buty.status='w magazynie'
+        buty.save()
+        return super().delete(request, *args, **kwargs)
+
+
 class DokonajSprzedazyCreateView(PermissionRequiredMixin, CreateView):
     model = Sprzedane
-    fields = ['data_sprzedazy', 'cena_sprzedazy', 'komu_sprzedane', 'wplynely_pieniadze', 'data_przesylki', 'sledzenie_przesylki']
+    fields = [
+        'data_sprzedazy',
+        'cena_sprzedazy',
+        'komu_sprzedane', 
+        'wplynely_pieniadze', 
+        'data_przesylki', 
+        'sledzenie_przesylki',
+        ]
     context_object_name = 'zwrot'
     template_name='magazyn/sprzedaz_create.html'
     permission_required="magazyn.magazyn_admin"
@@ -139,18 +169,18 @@ class DokonajSprzedazyCreateView(PermissionRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class AnulujZwrotDeleteView(PermissionRequiredMixin, DeleteView):
-    model = Zwrot
+class AnulujSprzedazDeleteView(PermissionRequiredMixin, DeleteView):
+    model = Sprzedane
     context_object_name = 'para'
-    template_name='magazyn/zwrot_delete.html'
+    template_name='magazyn/sprzedaz_delete.html'
     permission_required="magazyn.magazyn_admin"
 
     def get_success_url(self):
-        # redirect to shoes detail view
+        # redirect to shoes detail page
         return reverse_lazy ('magazyn_detail', kwargs={'pk': self.kwargs['pk']})
 
     def delete(self, request, *args, **kwargs):
-        # change buty status to "w magazynie" on delete
+        # change buty status to "sprzedano" on delete
         buty = Buty.objects.get(pk=self.kwargs['pk'])
         buty.status='w magazynie'
         buty.save()

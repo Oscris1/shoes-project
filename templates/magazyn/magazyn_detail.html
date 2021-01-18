@@ -5,10 +5,10 @@
 {% block content %}
     <div class='container-fluid main-site'>
         <div class='row'>
-            <div class="col-6">
+            <div class="col-5">
                 <h1>{{ para.marka }} {{ para.model_buta }} {{ para.typ }}<br> {{ para.rozmiar }}</h1>
             </div>
-            <div class="col-6">
+            <div class="col-7">
                 <a href="{% url 'magazyn_delete' para.pk %}" class="btn btn-danger float-right btn-detail">Usuń</a>
                 <a href="{% url 'magazyn_update' para.pk %}" class="btn btn-primary float-right btn-detail">Edytuj</a>
                 {% if para.status == "w magazynie" %}
@@ -17,6 +17,9 @@
                 {% elif para.status == "zwrot" %}
                     <a href="#" class="btn btn-secondary float-right btn-detail">Edytuj zwrot</a>
                     <a href="{% url 'zwrot_delete' para.pk %}" class="btn btn-dark float-right btn-detail">Anuluj zwrot</a>
+                    {% elif para.status == "sprzedano" %}
+                    <a href="#" class="btn btn-secondary float-right btn-detail">Edytuj sprzedaż</a>
+                    <a href="{% url 'sprzedaz_delete' para.pk %}" class="btn btn-dark float-right btn-detail">Anuluj sprzedaż</a>
                 {% endif %}
             </div>
         </div>
@@ -45,7 +48,7 @@
                 <p><b>Uwagi:</b>&nbsp;&nbsp;{{ para.uwagi }}</p>
                 {% if para.status == "sprzedano" %}
                     <p><b>Data sprzedaży:</b>&nbsp;&nbsp;{{ para.sprzedane.data_sprzedazy }}</p>
-                    <p><b>Cena sprzedaży:</b>&nbsp;&nbsp;{{ para.sprzedane.cena_sprzedazy }}</p>
+                    <p><b>Cena sprzedaży:</b>&nbsp;&nbsp;{{ para.sprzedane.cena_sprzedazy }} zł</p>
                     <p><b>Komu sprzedane:</b>&nbsp;&nbsp;{{ para.sprzedane.komu_sprzedane }}</p>
                     <p><b>Wpłynęły pięniądze:</b>&nbsp;&nbsp;{{ para.sprzedane.get_wplynely_pieniadze_display }}</p>
                     <p><b>Data przesyłki:</b>&nbsp;&nbsp;{{ para.sprzedane.data_przesylki }}</p>
