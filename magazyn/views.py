@@ -127,9 +127,22 @@ class DokonajZwrotuCreateView(PermissionRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
+class ZwrotUpdateView(PermissionRequiredMixin, UpdateView):
+    model = Zwrot
+    context_object_name = 'zwrot'
+    template_name='magazyn/zwrot_update.html'
+    fields = [
+        'wplynely_pieniadze', 
+        'data_przesylki', 
+        'sledzenie_przesylki', 
+        'data_zwrotu',
+        ]
+    permission_required="magazyn.magazyn_admin"
+
+
 class AnulujZwrotDeleteView(PermissionRequiredMixin, DeleteView):
     model = Zwrot
-    context_object_name = 'para'
+    context_object_name = 'zwrot'
     template_name='magazyn/zwrot_delete.html'
     permission_required="magazyn.magazyn_admin"
 
@@ -155,7 +168,7 @@ class DokonajSprzedazyCreateView(PermissionRequiredMixin, CreateView):
         'data_przesylki', 
         'sledzenie_przesylki',
         ]
-    context_object_name = 'zwrot'
+    context_object_name = 'sprzedaz'
     template_name='magazyn/sprzedaz_create.html'
     permission_required="magazyn.magazyn_admin"
 
@@ -171,7 +184,7 @@ class DokonajSprzedazyCreateView(PermissionRequiredMixin, CreateView):
 
 class AnulujSprzedazDeleteView(PermissionRequiredMixin, DeleteView):
     model = Sprzedane
-    context_object_name = 'para'
+    context_object_name = 'sprzedaz'
     template_name='magazyn/sprzedaz_delete.html'
     permission_required="magazyn.magazyn_admin"
 

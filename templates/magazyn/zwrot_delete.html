@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class='container-fluid main-site'>
-    <a class="btn btn-dark" href="{{ para.get_absolute_url }}"><- wróć</a>
+    <a class="btn btn-dark" href="{{ zwrot.get_absolute_url }}"><- wróć</a>
     <h1>{{ para.marka }} {{ para.model_buta }} {{ para.typ }}<br> {{ para.rozmiar }}</h1>
     <form action="" method="post">
         {% csrf_token %}

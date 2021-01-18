@@ -1,0 +1,18 @@
+{% extends 'magazyn/base_magazyn.html' %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block title %} Edytuj informacje zwrotu {% endblock title %}
+
+{% block content %}
+<div class='container-fluid main-site'>
+    <h1>Edytuj informacje zwrotu</h1>
+    <form method="post" class="uniForm">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input type="submit" class="btn btn-lg btn-dark" value="Zmień">
+    </form>
+</div>
+{% endblock content %}
