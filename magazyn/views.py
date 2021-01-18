@@ -180,7 +180,7 @@ class AnulujSprzedazDeleteView(PermissionRequiredMixin, DeleteView):
         return reverse_lazy ('magazyn_detail', kwargs={'pk': self.kwargs['pk']})
 
     def delete(self, request, *args, **kwargs):
-        # change buty status to "sprzedano" on delete
+        # change buty status to "w magazynie" on delete
         buty = Buty.objects.get(pk=self.kwargs['pk'])
         buty.status='w magazynie'
         buty.save()
