@@ -384,7 +384,7 @@ class MagazynTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'magazyn/sprzedaz_delete.html')
 
-    # Update views tests
+    # Zwrot update views tests
     def test_zwrot_update_view_access_no_user(self):
         response = self.client.get(reverse('zwrot_update', kwargs={'pk': self.buty.id}))
         self.assertEqual(response.status_code, 302)
