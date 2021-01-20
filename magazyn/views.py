@@ -5,7 +5,9 @@ from django.urls import reverse_lazy
 from .models import Buty, Zwrot, Sprzedane
 from .filters import ButyFilter
 
-# Create your views here.
+
+class Dashboard(TemplateView):
+    template_name = "magazyn/magazyn_dashboard.html"
 
 
 class MagazynListView(PermissionRequiredMixin, ListView):
