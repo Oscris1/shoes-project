@@ -1,4 +1,4 @@
-from django.test import TestCase, Client
+from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
 from django.urls import reverse
@@ -10,6 +10,7 @@ from .models import (
     Sprzedane,
     Zwrot,
 )
+
 
 # Create your tests here.
 class MagazynTests(TestCase):
@@ -27,7 +28,9 @@ class MagazynTests(TestCase):
             username="special_user",
             password="testpass123",
         )
-        cls.special_user.user_permissions.add(Permission.objects.get(codename="magazyn_admin"))
+        cls.special_user.user_permissions.add(
+            Permission.objects.get(codename="magazyn_admin")
+        )
 
         cls.standard_user = get_user_model().objects.create_user(
             email="standard_user@email.com",
@@ -94,7 +97,9 @@ class MagazynTests(TestCase):
         self.assertEqual(f"{self.buty.uwagi}", "brak"),
         self.assertEqual(f"{self.buty.status}", "W magazynie"),
         self.assertEqual(f"{self.buty.gdzie_kupione}", "AdidasApp"),
-        self.assertEqual(f"{self.buty.sprzedane.data_sprzedazy}", "2021-01-19"),
+        self.assertEqual(
+            f"{self.buty.sprzedane.data_sprzedazy}", "2021-01-19"
+        ),
         self.assertEqual(f"{self.buty.sprzedane.cena_sprzedazy}", "490"),
 
     def test_sprzedane_listening(self):
@@ -105,7 +110,8 @@ class MagazynTests(TestCase):
         self.assertEqual(f"{self.sprzedane.wplynely_pieniadze}", "True"),
         self.assertEqual(f"{self.sprzedane.data_przesylki}", "2021-01-23"),
         self.assertEqual(
-            f"{self.sprzedane.sledzenie_przesylki}", "https://www.dhl.com/pl-pl/home.html"
+            f"{self.sprzedane.sledzenie_przesylki}",
+            "https://www.dhl.com/pl-pl/home.html",
         ),
 
     def test_zwrot_listening(self):
@@ -114,7 +120,8 @@ class MagazynTests(TestCase):
         self.assertEqual(f"{self.zwrot.wplynely_pieniadze}", "True"),
         self.assertEqual(f"{self.zwrot.data_przesylki}", "2021-01-23"),
         self.assertEqual(
-            f"{self.zwrot.sledzenie_przesylki}", "https://www.dhl.com/pl-pl/home.html"
+            f"{self.zwrot.sledzenie_przesylki}",
+            "https://www.dhl.com/pl-pl/home.html",
         ),
 
     # Testy widoków:
@@ -124,17 +131,22 @@ class MagazynTests(TestCase):
         response = self.client.get(reverse("magazyn_list"))
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(
-            response, expected_url=("/accounts/login/?next=/magazyn/w-magazynie/")
+            response,
+            expected_url=("/accounts/login/?next=/magazyn/w-magazynie/"),
         )
 
     def test_magazyn_list_view_access_standard_user(self):
-        self.client.login(email="standard_user@email.com", password="testpass123")
+        self.client.login(
+            email="standard_user@email.com", password="testpass123"
+        )
         response = self.client.get(reverse("magazyn_list"))
         self.assertEqual(response.status_code, 403)
         self.assertTemplateUsed(response, "403.html")
 
     def test_magazyn_list_view_access_special_user(self):
-        self.client.login(email="special_user@email.com", password="testpass123")
+        self.client.login(
+            email="special_user@email.com", password="testpass123"
+        )
         response = self.client.get(reverse("magazyn_list"))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "magazyn/magazyn_list.html")
@@ -149,16 +161,22 @@ class MagazynTests(TestCase):
     def test_magazyn_detail_view_access(self):
         response = self.client.get(self.buty.get_absolute_url())
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, expected_url=("/accounts/login/?next=/magazyn/1/"))
+        self.assertRedirects(
+            response, expected_url=("/accounts/login/?next=/magazyn/1/")
+        )
 
     def test_magazyn_detail_view_access_standard_user(self):
-        self.client.login(email="standard_user@email.com", password="testpass123")
+        self.client.login(
+            email="standard_user@email.com", password="testpass123"
+        )
         response = self.client.get(self.buty.get_absolute_url())
         self.assertEqual(response.status_code, 403)
         self.assertTemplateUsed(response, "403.html")
 
     def test_magazyn_detail_view_access_special_user(self):
-        self.client.login(email="special_user@email.com", password="testpass123")
+        self.client.login(
+            email="special_user@email.com", password="testpass123"
+        )
         response = self.client.get(self.buty.get_absolute_url())
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "magazyn/magazyn_detail.html")
@@ -173,16 +191,22 @@ class MagazynTests(TestCase):
     def test_magazyn_create_view_access_no_user(self):
         response = self.client.get(reverse("magazyn_create"))
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, expected_url=("/accounts/login/?next=/magazyn/nowe/"))
+        self.assertRedirects(
+            response, expected_url=("/accounts/login/?next=/magazyn/nowe/")
+        )
 
     def test_magazyn_create_view_access_standard_user(self):
-        self.client.login(email="standard_user@email.com", password="testpass123")
+        self.client.login(
+            email="standard_user@email.com", password="testpass123"
+        )
         response = self.client.get(reverse("magazyn_create"))
         self.assertEqual(response.status_code, 403)
         self.assertTemplateUsed(response, "403.html")
 
     def test_magazyn_create_view_access_special_user(self):
-        self.client.login(email="special_user@email.com", password="testpass123")
+        self.client.login(
+            email="special_user@email.com", password="testpass123"
+        )
         response = self.client.get(reverse("magazyn_create"))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "magazyn/magazyn_create.html")
@@ -195,49 +219,78 @@ class MagazynTests(TestCase):
 
     # Update views tests
     def test_magazyn_update_view_access_no_user(self):
-        response = self.client.get(reverse("magazyn_update", kwargs={"pk": self.buty.id}))
+        response = self.client.get(
+            reverse("magazyn_update", kwargs={"pk": self.buty.id})
+        )
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, expected_url=("/accounts/login/?next=/magazyn/1/zmiana/"))
+        self.assertRedirects(
+            response, expected_url=("/accounts/login/?next=/magazyn/1/zmiana/")
+        )
 
     def test_magazyn_update_view_access_standard_user(self):
-        self.client.login(email="standard_user@email.com", password="testpass123")
-        response = self.client.get(reverse("magazyn_update", kwargs={"pk": self.buty.id}))
+        self.client.login(
+            email="standard_user@email.com", password="testpass123"
+        )
+        response = self.client.get(
+            reverse("magazyn_update", kwargs={"pk": self.buty.id})
+        )
         self.assertEqual(response.status_code, 403)
         self.assertTemplateUsed(response, "403.html")
 
     def test_magazyn_update_view_access_special_user(self):
-        self.client.login(email="special_user@email.com", password="testpass123")
-        response = self.client.get(reverse("magazyn_update", kwargs={"pk": self.buty.id}))
+        self.client.login(
+            email="special_user@email.com", password="testpass123"
+        )
+        response = self.client.get(
+            reverse("magazyn_update", kwargs={"pk": self.buty.id})
+        )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "magazyn/magazyn_update.html")
 
     def test_magazyn_update_view_access_super_user(self):
         self.client.login(email="super_user@email.com", password="testpass123")
-        response = self.client.get(reverse("magazyn_update", kwargs={"pk": self.buty.id}))
+        response = self.client.get(
+            reverse("magazyn_update", kwargs={"pk": self.buty.id})
+        )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "magazyn/magazyn_update.html")
 
     # Delete views tests
     def test_magazyn_delete_view_access_no_user(self):
-        response = self.client.get(reverse("magazyn_delete", args=[str(self.buty.pk)]))
+        response = self.client.get(
+            reverse("magazyn_delete", args=[str(self.buty.pk)])
+        )
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, expected_url=("/accounts/login/?next=/magazyn/1/usuwanie/"))
+        self.assertRedirects(
+            response,
+            expected_url=("/accounts/login/?next=/magazyn/1/usuwanie/"),
+        )
 
     def test_magazyn_delete_view_access_standard_user(self):
-        self.client.login(email="standard_user@email.com", password="testpass123")
-        response = self.client.get(reverse("magazyn_delete", args=[str(self.buty.pk)]))
+        self.client.login(
+            email="standard_user@email.com", password="testpass123"
+        )
+        response = self.client.get(
+            reverse("magazyn_delete", args=[str(self.buty.pk)])
+        )
         self.assertEqual(response.status_code, 403)
         self.assertTemplateUsed(response, "403.html")
 
     def test_magazyn_delete_view_access_special_user(self):
-        self.client.login(email="special_user@email.com", password="testpass123")
-        response = self.client.get(reverse("magazyn_delete", args=[str(self.buty.pk)]))
+        self.client.login(
+            email="special_user@email.com", password="testpass123"
+        )
+        response = self.client.get(
+            reverse("magazyn_delete", args=[str(self.buty.pk)])
+        )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "magazyn/magazyn_delete.html")
 
     def test_magazyn_delete_view_access_super_user(self):
         self.client.login(email="super_user@email.com", password="testpass123")
-        response = self.client.get(reverse("magazyn_delete", args=[str(self.buty.pk)]))
+        response = self.client.get(
+            reverse("magazyn_delete", args=[str(self.buty.pk)])
+        )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "magazyn/magazyn_delete.html")
 
@@ -245,16 +298,23 @@ class MagazynTests(TestCase):
     def test_sprzedane_list_view_access(self):
         response = self.client.get(reverse("sprzedane_list"))
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, expected_url=("/accounts/login/?next=/magazyn/sprzedane/"))
+        self.assertRedirects(
+            response,
+            expected_url=("/accounts/login/?next=/magazyn/sprzedane/"),
+        )
 
     def test_sprzedane_list_view_access_standard_user(self):
-        self.client.login(email="standard_user@email.com", password="testpass123")
+        self.client.login(
+            email="standard_user@email.com", password="testpass123"
+        )
         response = self.client.get(reverse("sprzedane_list"))
         self.assertEqual(response.status_code, 403)
         self.assertTemplateUsed(response, "403.html")
 
     def test_sprzedane_list_view_access_special_user(self):
-        self.client.login(email="special_user@email.com", password="testpass123")
+        self.client.login(
+            email="special_user@email.com", password="testpass123"
+        )
         response = self.client.get(reverse("sprzedane_list"))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "magazyn/magazyn_list.html")
@@ -269,16 +329,22 @@ class MagazynTests(TestCase):
     def test_zwrot_list_view_access(self):
         response = self.client.get(reverse("zwrot_list"))
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, expected_url=("/accounts/login/?next=/magazyn/zwrot/"))
+        self.assertRedirects(
+            response, expected_url=("/accounts/login/?next=/magazyn/zwrot/")
+        )
 
     def test_zwrot_list_view_access_standard_user(self):
-        self.client.login(email="standard_user@email.com", password="testpass123")
+        self.client.login(
+            email="standard_user@email.com", password="testpass123"
+        )
         response = self.client.get(reverse("zwrot_list"))
         self.assertEqual(response.status_code, 403)
         self.assertTemplateUsed(response, "403.html")
 
     def test_zwrot_list_view_access_special_user(self):
-        self.client.login(email="special_user@email.com", password="testpass123")
+        self.client.login(
+            email="special_user@email.com", password="testpass123"
+        )
         response = self.client.get(reverse("zwrot_list"))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "magazyn/magazyn_list.html")
@@ -291,157 +357,235 @@ class MagazynTests(TestCase):
 
     # Dokonaj Zwrotu create view test
     def test_zwrot_create_view_access_no_user(self):
-        response = self.client.get(reverse("zwrot_create", kwargs={"pk": self.buty.id}))
+        response = self.client.get(
+            reverse("zwrot_create", kwargs={"pk": self.buty.id})
+        )
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(
-            response, expected_url=("/accounts/login/?next=/magazyn/1/zwroc_buty/")
+            response,
+            expected_url=("/accounts/login/?next=/magazyn/1/zwroc_buty/"),
         )
 
     def test_zwrot_create_view_access_standard_user(self):
-        self.client.login(email="standard_user@email.com", password="testpass123")
-        response = self.client.get(reverse("zwrot_create", kwargs={"pk": self.buty.id}))
+        self.client.login(
+            email="standard_user@email.com", password="testpass123"
+        )
+        response = self.client.get(
+            reverse("zwrot_create", kwargs={"pk": self.buty.id})
+        )
         self.assertEqual(response.status_code, 403)
         self.assertTemplateUsed(response, "403.html")
 
     def test_zwrot_create_view_access_special_user(self):
-        self.client.login(email="special_user@email.com", password="testpass123")
-        response = self.client.get(reverse("zwrot_create", kwargs={"pk": self.buty.id}))
+        self.client.login(
+            email="special_user@email.com", password="testpass123"
+        )
+        response = self.client.get(
+            reverse("zwrot_create", kwargs={"pk": self.buty.id})
+        )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "magazyn/zwrot_create.html")
 
     def test_zwrot_create_view_access_super_user(self):
         self.client.login(email="super_user@email.com", password="testpass123")
-        response = self.client.get(reverse("zwrot_create", kwargs={"pk": self.buty.id}))
+        response = self.client.get(
+            reverse("zwrot_create", kwargs={"pk": self.buty.id})
+        )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "magazyn/zwrot_create.html")
 
         # Dokonaj Sprzedaży create view test
 
     def test_zwrot_sprzedaz_view_access_no_user(self):
-        response = self.client.get(reverse("sprzedaz_create", kwargs={"pk": self.buty.id}))
+        response = self.client.get(
+            reverse("sprzedaz_create", kwargs={"pk": self.buty.id})
+        )
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(
-            response, expected_url=("/accounts/login/?next=/magazyn/1/sprzedaj_buty/")
+            response,
+            expected_url=("/accounts/login/?next=/magazyn/1/sprzedaj_buty/"),
         )
 
     def test_zwrot_sprzedaz_view_access_standard_user(self):
-        self.client.login(email="standard_user@email.com", password="testpass123")
-        response = self.client.get(reverse("sprzedaz_create", kwargs={"pk": self.buty.id}))
+        self.client.login(
+            email="standard_user@email.com", password="testpass123"
+        )
+        response = self.client.get(
+            reverse("sprzedaz_create", kwargs={"pk": self.buty.id})
+        )
         self.assertEqual(response.status_code, 403)
         self.assertTemplateUsed(response, "403.html")
 
     def test_zwrot_sprzedaz_view_access_special_user(self):
-        self.client.login(email="special_user@email.com", password="testpass123")
-        response = self.client.get(reverse("sprzedaz_create", kwargs={"pk": self.buty.id}))
+        self.client.login(
+            email="special_user@email.com", password="testpass123"
+        )
+        response = self.client.get(
+            reverse("sprzedaz_create", kwargs={"pk": self.buty.id})
+        )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "magazyn/sprzedaz_create.html")
 
     def test_zwrot_sprzedaz_view_access_super_user(self):
         self.client.login(email="super_user@email.com", password="testpass123")
-        response = self.client.get(reverse("sprzedaz_create", kwargs={"pk": self.buty.id}))
+        response = self.client.get(
+            reverse("sprzedaz_create", kwargs={"pk": self.buty.id})
+        )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "magazyn/sprzedaz_create.html")
 
     # Zwrot delete views tests
     def test_zwrot_delete_view_access_no_user(self):
-        response = self.client.get(reverse("zwrot_delete", kwargs={"pk": self.buty.id}))
+        response = self.client.get(
+            reverse("zwrot_delete", kwargs={"pk": self.buty.id})
+        )
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(
-            response, expected_url=("/accounts/login/?next=/magazyn/1/anuluj_zwrot/")
+            response,
+            expected_url=("/accounts/login/?next=/magazyn/1/anuluj_zwrot/"),
         )
 
     def test_zwrot_delete_view_access_standard_user(self):
-        self.client.login(email="standard_user@email.com", password="testpass123")
-        response = self.client.get(reverse("zwrot_delete", kwargs={"pk": self.buty.id}))
+        self.client.login(
+            email="standard_user@email.com", password="testpass123"
+        )
+        response = self.client.get(
+            reverse("zwrot_delete", kwargs={"pk": self.buty.id})
+        )
         self.assertEqual(response.status_code, 403)
         self.assertTemplateUsed(response, "403.html")
 
     def test_zwrot_delete_view_access_special_user(self):
-        self.client.login(email="special_user@email.com", password="testpass123")
-        response = self.client.get(reverse("zwrot_delete", kwargs={"pk": self.buty.id}))
+        self.client.login(
+            email="special_user@email.com", password="testpass123"
+        )
+        response = self.client.get(
+            reverse("zwrot_delete", kwargs={"pk": self.buty.id})
+        )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "magazyn/zwrot_delete.html")
 
     def test_zwrot_delete_view_access_super_user(self):
         self.client.login(email="super_user@email.com", password="testpass123")
-        response = self.client.get(reverse("zwrot_delete", kwargs={"pk": self.buty.id}))
+        response = self.client.get(
+            reverse("zwrot_delete", kwargs={"pk": self.buty.id})
+        )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "magazyn/zwrot_delete.html")
 
     # Sprzedaz delete views tests
     def test_sprzedaz_delete_view_access_no_user(self):
-        response = self.client.get(reverse("sprzedaz_delete", kwargs={"pk": self.buty.id}))
+        response = self.client.get(
+            reverse("sprzedaz_delete", kwargs={"pk": self.buty.id})
+        )
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(
-            response, expected_url=("/accounts/login/?next=/magazyn/1/anuluj_sprzedaz/")
+            response,
+            expected_url=("/accounts/login/?next=/magazyn/1/anuluj_sprzedaz/"),
         )
 
     def test_sprzedaz_delete_view_access_standard_user(self):
-        self.client.login(email="standard_user@email.com", password="testpass123")
-        response = self.client.get(reverse("sprzedaz_delete", kwargs={"pk": self.buty.id}))
+        self.client.login(
+            email="standard_user@email.com", password="testpass123"
+        )
+        response = self.client.get(
+            reverse("sprzedaz_delete", kwargs={"pk": self.buty.id})
+        )
         self.assertEqual(response.status_code, 403)
         self.assertTemplateUsed(response, "403.html")
 
     def test_sprzedaz_delete_view_access_special_user(self):
-        self.client.login(email="special_user@email.com", password="testpass123")
-        response = self.client.get(reverse("sprzedaz_delete", kwargs={"pk": self.buty.id}))
+        self.client.login(
+            email="special_user@email.com", password="testpass123"
+        )
+        response = self.client.get(
+            reverse("sprzedaz_delete", kwargs={"pk": self.buty.id})
+        )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "magazyn/sprzedaz_delete.html")
 
     def test_sprzedaz_delete_view_access_super_user(self):
         self.client.login(email="super_user@email.com", password="testpass123")
-        response = self.client.get(reverse("sprzedaz_delete", kwargs={"pk": self.buty.id}))
+        response = self.client.get(
+            reverse("sprzedaz_delete", kwargs={"pk": self.buty.id})
+        )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "magazyn/sprzedaz_delete.html")
 
     # Zwrot update views tests
     def test_zwrot_update_view_access_no_user(self):
-        response = self.client.get(reverse("zwrot_update", kwargs={"pk": self.buty.id}))
+        response = self.client.get(
+            reverse("zwrot_update", kwargs={"pk": self.buty.id})
+        )
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(
-            response, expected_url=("/accounts/login/?next=/magazyn/1/edytuj_zwrot/")
+            response,
+            expected_url=("/accounts/login/?next=/magazyn/1/edytuj_zwrot/"),
         )
 
     def test_zwrot_update_view_access_standard_user(self):
-        self.client.login(email="standard_user@email.com", password="testpass123")
-        response = self.client.get(reverse("zwrot_update", kwargs={"pk": self.buty.id}))
+        self.client.login(
+            email="standard_user@email.com", password="testpass123"
+        )
+        response = self.client.get(
+            reverse("zwrot_update", kwargs={"pk": self.buty.id})
+        )
         self.assertEqual(response.status_code, 403)
         self.assertTemplateUsed(response, "403.html")
 
     def test_zwrot_update_view_access_special_user(self):
-        self.client.login(email="special_user@email.com", password="testpass123")
-        response = self.client.get(reverse("zwrot_update", kwargs={"pk": self.buty.id}))
+        self.client.login(
+            email="special_user@email.com", password="testpass123"
+        )
+        response = self.client.get(
+            reverse("zwrot_update", kwargs={"pk": self.buty.id})
+        )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "magazyn/zwrot_update.html")
 
     def test_zwrot_update_view_access_super_user(self):
         self.client.login(email="super_user@email.com", password="testpass123")
-        response = self.client.get(reverse("zwrot_update", kwargs={"pk": self.buty.id}))
+        response = self.client.get(
+            reverse("zwrot_update", kwargs={"pk": self.buty.id})
+        )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "magazyn/zwrot_update.html")
 
     # Sprzedaż update views tests
     def test_sprzedaz_update_view_access_no_user(self):
-        response = self.client.get(reverse("sprzedaz_update", kwargs={"pk": self.buty.id}))
+        response = self.client.get(
+            reverse("sprzedaz_update", kwargs={"pk": self.buty.id})
+        )
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(
-            response, expected_url=("/accounts/login/?next=/magazyn/1/edytuj_sprzedaz/")
+            response,
+            expected_url=("/accounts/login/?next=/magazyn/1/edytuj_sprzedaz/"),
         )
 
     def test_sprzedaz_update_view_access_standard_user(self):
-        self.client.login(email="standard_user@email.com", password="testpass123")
-        response = self.client.get(reverse("sprzedaz_update", kwargs={"pk": self.buty.id}))
+        self.client.login(
+            email="standard_user@email.com", password="testpass123"
+        )
+        response = self.client.get(
+            reverse("sprzedaz_update", kwargs={"pk": self.buty.id})
+        )
         self.assertEqual(response.status_code, 403)
         self.assertTemplateUsed(response, "403.html")
 
     def test_sprzedaz_update_view_access_special_user(self):
-        self.client.login(email="special_user@email.com", password="testpass123")
-        response = self.client.get(reverse("sprzedaz_update", kwargs={"pk": self.buty.id}))
+        self.client.login(
+            email="special_user@email.com", password="testpass123"
+        )
+        response = self.client.get(
+            reverse("sprzedaz_update", kwargs={"pk": self.buty.id})
+        )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "magazyn/sprzedaz_update.html")
 
     def test_sprzedaz_update_view_access_super_user(self):
         self.client.login(email="super_user@email.com", password="testpass123")
-        response = self.client.get(reverse("sprzedaz_update", kwargs={"pk": self.buty.id}))
+        response = self.client.get(
+            reverse("sprzedaz_update", kwargs={"pk": self.buty.id})
+        )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "magazyn/sprzedaz_update.html")

@@ -1,4 +1,4 @@
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.urls import reverse_lazy
@@ -6,6 +6,8 @@ from .models import Buty, Zwrot, Sprzedane
 from .filters import ButyFilter
 
 # Create your views here.
+
+
 class MagazynListView(PermissionRequiredMixin, ListView):
     model = Buty
     context_object_name = "buty"
@@ -121,7 +123,8 @@ class DokonajZwrotuCreateView(PermissionRequiredMixin, CreateView):
     permission_required = "magazyn.magazyn_admin"
 
     def form_valid(self, form):
-        form.instance.pk = self.kwargs["pk"]  # set new Zwrot object pk to given pk
+        # set new Zwrot object pk to given pk
+        form.instance.pk = self.kwargs["pk"]
 
         # change buty status to "zwrot" on create Zwrot object
         buty = Buty.objects.get(pk=self.kwargs["pk"])
@@ -176,7 +179,8 @@ class DokonajSprzedazyCreateView(PermissionRequiredMixin, CreateView):
     permission_required = "magazyn.magazyn_admin"
 
     def form_valid(self, form):
-        form.instance.pk = self.kwargs["pk"]  # set new Sprzedane object pk to given pk
+        # set new Sprzedane object pk to given pk
+        form.instance.pk = self.kwargs["pk"]
 
         # change buty status to "sprzedano" on create Sprzedane object
         buty = Buty.objects.get(pk=self.kwargs["pk"])
