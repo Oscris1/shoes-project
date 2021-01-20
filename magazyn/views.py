@@ -8,45 +8,45 @@ from .filters import ButyFilter
 # Create your views here.
 class MagazynListView(PermissionRequiredMixin, ListView):
     model = Buty
-    context_object_name = 'buty'
-    template_name='magazyn/magazyn_list.html'
-    permission_required="magazyn.magazyn_admin"
-    
+    context_object_name = "buty"
+    template_name = "magazyn/magazyn_list.html"
+    permission_required = "magazyn.magazyn_admin"
+
     def get_queryset(self):
-        qs = super().get_queryset().filter(status='w magazynie')
-        #self.model.objects.all()
+        qs = super().get_queryset().filter(status="w magazynie")
+        # self.model.objects.all()
         my_filter = ButyFilter(self.request.GET, queryset=qs)
         return my_filter.qs
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["my_filter"] = ButyFilter()
         context["list_header"] = "Lista butów"
         return context
-    
- 
+
+
 class MagazynDetailView(PermissionRequiredMixin, DetailView):
     model = Buty
-    context_object_name = 'para'
-    template_name='magazyn/magazyn_detail.html'
-    permission_required="magazyn.magazyn_admin"
+    context_object_name = "para"
+    template_name = "magazyn/magazyn_detail.html"
+    permission_required = "magazyn.magazyn_admin"
 
 
 class MagazynCreateView(PermissionRequiredMixin, CreateView):
     model = Buty
     fields = [
-        'marka', 
-        'model_buta', 
-        'typ', 
-        'rozmiar', 
-        'data_zakupu', 
-        'cena_zakupu', 
-        'szacowana_wartosc', 
-        'uwagi', 
-        'gdzie_kupione',
-        ]
-    template_name='magazyn/magazyn_create.html'
-    permission_required="magazyn.magazyn_admin"
+        "marka",
+        "model_buta",
+        "typ",
+        "rozmiar",
+        "data_zakupu",
+        "cena_zakupu",
+        "szacowana_wartosc",
+        "uwagi",
+        "gdzie_kupione",
+    ]
+    template_name = "magazyn/magazyn_create.html"
+    permission_required = "magazyn.magazyn_admin"
 
     def form_valid(self, form):
         form.instance.status = "w magazynie"
@@ -55,31 +55,34 @@ class MagazynCreateView(PermissionRequiredMixin, CreateView):
 
 class MagazynUpdateView(PermissionRequiredMixin, UpdateView):
     model = Buty
-    context_object_name = 'para'
-    template_name='magazyn/magazyn_update.html'
-    fields = ['szacowana_wartosc', 'uwagi',]
-    permission_required="magazyn.magazyn_admin"
+    context_object_name = "para"
+    template_name = "magazyn/magazyn_update.html"
+    fields = [
+        "szacowana_wartosc",
+        "uwagi",
+    ]
+    permission_required = "magazyn.magazyn_admin"
 
 
 class MagazynDeleteView(PermissionRequiredMixin, DeleteView):
     model = Buty
-    context_object_name = 'para'
-    template_name='magazyn/magazyn_delete.html'
-    success_url = reverse_lazy('magazyn_list')
-    permission_required="magazyn.magazyn_admin"
+    context_object_name = "para"
+    template_name = "magazyn/magazyn_delete.html"
+    success_url = reverse_lazy("magazyn_list")
+    permission_required = "magazyn.magazyn_admin"
 
 
 class SprzedaneListView(PermissionRequiredMixin, ListView):
     model = Buty
-    context_object_name = 'buty'
-    template_name='magazyn/magazyn_list.html'
-    permission_required="magazyn.magazyn_admin"
-    
+    context_object_name = "buty"
+    template_name = "magazyn/magazyn_list.html"
+    permission_required = "magazyn.magazyn_admin"
+
     def get_queryset(self):
-        qs = super().get_queryset().filter(status='sprzedano')
+        qs = super().get_queryset().filter(status="sprzedano")
         my_filter = ButyFilter(self.request.GET, queryset=qs)
         return my_filter.qs
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["my_filter"] = ButyFilter()
@@ -89,15 +92,15 @@ class SprzedaneListView(PermissionRequiredMixin, ListView):
 
 class ZwrotListView(PermissionRequiredMixin, ListView):
     model = Buty
-    context_object_name = 'buty'
-    template_name='magazyn/magazyn_list.html'
-    permission_required="magazyn.magazyn_admin"
-    
+    context_object_name = "buty"
+    template_name = "magazyn/magazyn_list.html"
+    permission_required = "magazyn.magazyn_admin"
+
     def get_queryset(self):
-        qs = super().get_queryset().filter(status='zwrot')
+        qs = super().get_queryset().filter(status="zwrot")
         my_filter = ButyFilter(self.request.GET, queryset=qs)
         return my_filter.qs
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["my_filter"] = ButyFilter()
@@ -108,52 +111,52 @@ class ZwrotListView(PermissionRequiredMixin, ListView):
 class DokonajZwrotuCreateView(PermissionRequiredMixin, CreateView):
     model = Zwrot
     fields = [
-        'wplynely_pieniadze', 
-        'data_przesylki', 
-        'sledzenie_przesylki', 
-        'data_zwrotu',
-        ]
-    context_object_name = 'zwrot'
-    template_name='magazyn/zwrot_create.html'
-    permission_required="magazyn.magazyn_admin"
+        "wplynely_pieniadze",
+        "data_przesylki",
+        "sledzenie_przesylki",
+        "data_zwrotu",
+    ]
+    context_object_name = "zwrot"
+    template_name = "magazyn/zwrot_create.html"
+    permission_required = "magazyn.magazyn_admin"
 
     def form_valid(self, form):
-        form.instance.pk = self.kwargs['pk'] # set new Zwrot object pk to given pk
-        
+        form.instance.pk = self.kwargs["pk"]  # set new Zwrot object pk to given pk
+
         # change buty status to "zwrot" on create Zwrot object
-        buty = Buty.objects.get(pk=self.kwargs['pk'])
-        buty.status='zwrot'
+        buty = Buty.objects.get(pk=self.kwargs["pk"])
+        buty.status = "zwrot"
         buty.save()
         return super().form_valid(form)
 
 
 class ZwrotUpdateView(PermissionRequiredMixin, UpdateView):
     model = Zwrot
-    context_object_name = 'zwrot'
-    template_name='magazyn/zwrot_update.html'
+    context_object_name = "zwrot"
+    template_name = "magazyn/zwrot_update.html"
     fields = [
-        'wplynely_pieniadze', 
-        'data_przesylki', 
-        'sledzenie_przesylki', 
-        'data_zwrotu',
-        ]
-    permission_required="magazyn.magazyn_admin"
+        "wplynely_pieniadze",
+        "data_przesylki",
+        "sledzenie_przesylki",
+        "data_zwrotu",
+    ]
+    permission_required = "magazyn.magazyn_admin"
 
 
 class AnulujZwrotDeleteView(PermissionRequiredMixin, DeleteView):
     model = Zwrot
-    context_object_name = 'zwrot'
-    template_name='magazyn/zwrot_delete.html'
-    permission_required="magazyn.magazyn_admin"
+    context_object_name = "zwrot"
+    template_name = "magazyn/zwrot_delete.html"
+    permission_required = "magazyn.magazyn_admin"
 
     def get_success_url(self):
         # redirect to shoes detail page
-        return reverse_lazy ('magazyn_detail', kwargs={'pk': self.kwargs['pk']})
+        return reverse_lazy("magazyn_detail", kwargs={"pk": self.kwargs["pk"]})
 
     def delete(self, request, *args, **kwargs):
         # change buty status to "w magazynie" on delete
-        buty = Buty.objects.get(pk=self.kwargs['pk'])
-        buty.status='w magazynie'
+        buty = Buty.objects.get(pk=self.kwargs["pk"])
+        buty.status = "w magazynie"
         buty.save()
         return super().delete(request, *args, **kwargs)
 
@@ -161,55 +164,55 @@ class AnulujZwrotDeleteView(PermissionRequiredMixin, DeleteView):
 class DokonajSprzedazyCreateView(PermissionRequiredMixin, CreateView):
     model = Sprzedane
     fields = [
-        'data_sprzedazy',
-        'cena_sprzedazy',
-        'komu_sprzedane', 
-        'wplynely_pieniadze', 
-        'data_przesylki', 
-        'sledzenie_przesylki',
-        ]
-    context_object_name = 'sprzedaz'
-    template_name='magazyn/sprzedaz_create.html'
-    permission_required="magazyn.magazyn_admin"
+        "data_sprzedazy",
+        "cena_sprzedazy",
+        "komu_sprzedane",
+        "wplynely_pieniadze",
+        "data_przesylki",
+        "sledzenie_przesylki",
+    ]
+    context_object_name = "sprzedaz"
+    template_name = "magazyn/sprzedaz_create.html"
+    permission_required = "magazyn.magazyn_admin"
 
     def form_valid(self, form):
-        form.instance.pk = self.kwargs['pk']  # set new Sprzedane object pk to given pk
-        
+        form.instance.pk = self.kwargs["pk"]  # set new Sprzedane object pk to given pk
+
         # change buty status to "sprzedano" on create Sprzedane object
-        buty = Buty.objects.get(pk=self.kwargs['pk'])
-        buty.status='sprzedano'
+        buty = Buty.objects.get(pk=self.kwargs["pk"])
+        buty.status = "sprzedano"
         buty.save()
         return super().form_valid(form)
 
 
 class SprzedaneUpdateView(PermissionRequiredMixin, UpdateView):
     model = Sprzedane
-    context_object_name = 'sprzedaz'
-    template_name='magazyn/sprzedaz_update.html'
+    context_object_name = "sprzedaz"
+    template_name = "magazyn/sprzedaz_update.html"
     fields = [
-        'data_sprzedazy',
-        'cena_sprzedazy',
-        'komu_sprzedane', 
-        'wplynely_pieniadze', 
-        'data_przesylki', 
-        'sledzenie_przesylki',
-        ]
-    permission_required="magazyn.magazyn_admin"
+        "data_sprzedazy",
+        "cena_sprzedazy",
+        "komu_sprzedane",
+        "wplynely_pieniadze",
+        "data_przesylki",
+        "sledzenie_przesylki",
+    ]
+    permission_required = "magazyn.magazyn_admin"
 
 
 class AnulujSprzedazDeleteView(PermissionRequiredMixin, DeleteView):
     model = Sprzedane
-    context_object_name = 'sprzedaz'
-    template_name='magazyn/sprzedaz_delete.html'
-    permission_required="magazyn.magazyn_admin"
+    context_object_name = "sprzedaz"
+    template_name = "magazyn/sprzedaz_delete.html"
+    permission_required = "magazyn.magazyn_admin"
 
     def get_success_url(self):
         # redirect to shoes detail page
-        return reverse_lazy ('magazyn_detail', kwargs={'pk': self.kwargs['pk']})
+        return reverse_lazy("magazyn_detail", kwargs={"pk": self.kwargs["pk"]})
 
     def delete(self, request, *args, **kwargs):
         # change buty status to "w magazynie" on delete
-        buty = Buty.objects.get(pk=self.kwargs['pk'])
-        buty.status='w magazynie'
+        buty = Buty.objects.get(pk=self.kwargs["pk"])
+        buty.status = "w magazynie"
         buty.save()
         return super().delete(request, *args, **kwargs)
