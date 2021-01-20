@@ -119,7 +119,7 @@ class MagazynTests(TestCase):
     def test_magazyn_list_view_access(self):
         response = self.client.get(reverse('magazyn_list'))
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, expected_url=('/accounts/login/?next=/magazyn/'))
+        self.assertRedirects(response, expected_url=('/accounts/login/?next=/magazyn/w-magazynie/'))
 
     def test_magazyn_list_view_access_standard_user(self):
         self.client.login(email='standard_user@email.com', password='testpass123')
