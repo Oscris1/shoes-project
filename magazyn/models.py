@@ -101,9 +101,7 @@ class Buty(models.Model):
     rozmiar = models.CharField(max_length=7, choices=ROZMIAR)
     data_zakupu = models.DateField(null=True)
     cena_zakupu = models.DecimalField(max_digits=8, decimal_places=2)
-    szacowana_wartosc = models.DecimalField(
-        max_digits=8, decimal_places=2, null=True
-    )
+    szacowana_wartosc = models.DecimalField(max_digits=8, decimal_places=2, null=True)
     uwagi = models.CharField(max_length=250, null=True, blank=True)
     status = models.CharField(max_length=200, choices=STATUS)
     gdzie_kupione = models.CharField(max_length=50, null=True)
@@ -111,18 +109,10 @@ class Buty(models.Model):
     class Meta:
         verbose_name_plural = "Buty"
 
-        permissions = [
-            ("magazyn_admin", "User can do everything in Magazyn app")
-        ]
+        permissions = [("magazyn_admin", "User can do everything in Magazyn app")]
 
     def __str__(self):
-        return (
-            self.marka.name
-            + " "
-            + self.model_buta.name
-            + " id: "
-            + str(self.pk)
-        )
+        return self.marka.name + " " + self.model_buta.name + " id: " + str(self.pk)
 
     def get_absolute_url(self):
         return reverse("magazyn_detail", kwargs={"pk": self.pk})
@@ -133,9 +123,7 @@ class BazowaPrzesylka(models.Model):
     wplynely_pieniadze = models.BooleanField(
         verbose_name="Wpłynęły pieniądze", choices=BOOL_CHOICES, default=False
     )
-    data_przesylki = models.DateField(
-        verbose_name="Data przesyłki", null=True, blank=True
-    )
+    data_przesylki = models.DateField(verbose_name="Data przesyłki", null=True, blank=True)
     sledzenie_przesylki = models.URLField(
         verbose_name="Link do śledzenia przesyłki", null=True, blank=True
     )
@@ -145,13 +133,9 @@ class BazowaPrzesylka(models.Model):
 
 
 class Sprzedane(BazowaPrzesylka):
-    buty = models.OneToOneField(
-        Buty, on_delete=models.CASCADE, primary_key=True
-    )
+    buty = models.OneToOneField(Buty, on_delete=models.CASCADE, primary_key=True)
     data_sprzedazy = models.DateField(null=True, blank=True)
-    cena_sprzedazy = models.DecimalField(
-        max_digits=8, decimal_places=2, null=True, blank=True
-    )
+    cena_sprzedazy = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
     komu_sprzedane = models.CharField(max_length=50, null=True, blank=True)
 
     class Meta:
@@ -165,9 +149,7 @@ class Sprzedane(BazowaPrzesylka):
 
 
 class Zwrot(BazowaPrzesylka):
-    buty = models.OneToOneField(
-        Buty, on_delete=models.CASCADE, primary_key=True
-    )
+    buty = models.OneToOneField(Buty, on_delete=models.CASCADE, primary_key=True)
     data_zwrotu = models.DateField(null=True, blank=True)
 
     class Meta:

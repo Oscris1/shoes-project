@@ -4,6 +4,11 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.urls import reverse_lazy
 from .models import Buty, Zwrot, Sprzedane
 from .filters import ButyFilter
+from .forms import (
+    ButyCreateForm,
+    DokonajZwrotuForm,
+    DokonajSprzedazyForm,
+)
 
 
 class Dashboard(TemplateView):
@@ -38,17 +43,7 @@ class MagazynDetailView(PermissionRequiredMixin, DetailView):
 
 class MagazynCreateView(PermissionRequiredMixin, CreateView):
     model = Buty
-    fields = [
-        "marka",
-        "model_buta",
-        "typ",
-        "rozmiar",
-        "data_zakupu",
-        "cena_zakupu",
-        "szacowana_wartosc",
-        "uwagi",
-        "gdzie_kupione",
-    ]
+    form_class = ButyCreateForm
     template_name = "magazyn/magazyn_create.html"
     permission_required = "magazyn.magazyn_admin"
 
@@ -114,12 +109,7 @@ class ZwrotListView(PermissionRequiredMixin, ListView):
 
 class DokonajZwrotuCreateView(PermissionRequiredMixin, CreateView):
     model = Zwrot
-    fields = [
-        "wplynely_pieniadze",
-        "data_przesylki",
-        "sledzenie_przesylki",
-        "data_zwrotu",
-    ]
+    form_class = DokonajZwrotuForm
     context_object_name = "zwrot"
     template_name = "magazyn/zwrot_create.html"
     permission_required = "magazyn.magazyn_admin"
@@ -138,13 +128,8 @@ class DokonajZwrotuCreateView(PermissionRequiredMixin, CreateView):
 class ZwrotUpdateView(PermissionRequiredMixin, UpdateView):
     model = Zwrot
     context_object_name = "zwrot"
+    form_class = DokonajZwrotuForm
     template_name = "magazyn/zwrot_update.html"
-    fields = [
-        "wplynely_pieniadze",
-        "data_przesylki",
-        "sledzenie_przesylki",
-        "data_zwrotu",
-    ]
     permission_required = "magazyn.magazyn_admin"
 
 
@@ -168,14 +153,7 @@ class AnulujZwrotDeleteView(PermissionRequiredMixin, DeleteView):
 
 class DokonajSprzedazyCreateView(PermissionRequiredMixin, CreateView):
     model = Sprzedane
-    fields = [
-        "data_sprzedazy",
-        "cena_sprzedazy",
-        "komu_sprzedane",
-        "wplynely_pieniadze",
-        "data_przesylki",
-        "sledzenie_przesylki",
-    ]
+    form_class = DokonajSprzedazyForm
     context_object_name = "sprzedaz"
     template_name = "magazyn/sprzedaz_create.html"
     permission_required = "magazyn.magazyn_admin"
@@ -194,15 +172,8 @@ class DokonajSprzedazyCreateView(PermissionRequiredMixin, CreateView):
 class SprzedaneUpdateView(PermissionRequiredMixin, UpdateView):
     model = Sprzedane
     context_object_name = "sprzedaz"
+    form_class = DokonajSprzedazyForm
     template_name = "magazyn/sprzedaz_update.html"
-    fields = [
-        "data_sprzedazy",
-        "cena_sprzedazy",
-        "komu_sprzedane",
-        "wplynely_pieniadze",
-        "data_przesylki",
-        "sledzenie_przesylki",
-    ]
     permission_required = "magazyn.magazyn_admin"
 
 
