@@ -54,7 +54,8 @@
                     <p><b>Data przesyłki:</b>&nbsp;&nbsp;{{ para.sprzedane.data_przesylki }}</p>
                     <p><b>Śledzenie przesyłki:</b>&nbsp;&nbsp;
                         {% if para.sprzedane.sledzenie_przesylki %}
-                        <a href="{{ para.sprzedane.sledzenie_przesylki }}">kliknij tutaj</a></p>
+                            <a target="_blank" rel="noopener noreferrer" href="{{ para.sprzedane.sledzenie_przesylki }}">
+                                kliknij tutaj</a></p>
                         {% endif %}
 
                 {% elif para.status == "zwrot" %}
@@ -63,7 +64,8 @@
                     <p><b>Data przesyłki:</b>&nbsp;&nbsp;{{ para.zwrot.data_przesylki }}</p>
                     <p><b>Śledzenie przesyłki:</b>&nbsp;&nbsp;
                         {% if para.zwrot.sledzenie_przesylki %}
-                            <a href="{{ para.zwrot.sledzenie_przesylki }}">kliknij tutaj</a></p>
+                            <a target="_blank" rel="noopener noreferrer" href="{{ para.zwrot.sledzenie_przesylki }}">
+                                kliknij tutaj</a></p>
                         {% endif %}
                 {% endif %}
                 </div>
