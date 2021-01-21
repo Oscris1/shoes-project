@@ -23,6 +23,18 @@ class ButyCreateForm(ModelForm):
         }
 
 
+class MagazynUpdateForm(ModelForm):
+    class Meta:
+        model = Buty
+        fields = (
+            "szacowana_wartosc",
+            "uwagi",
+        )
+        widgets = {
+            "uwagi": Textarea(attrs={"rows": 4}),
+        }
+
+
 class DokonajZwrotuForm(ModelForm):
     class Meta:
         model = Zwrot

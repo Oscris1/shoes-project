@@ -8,6 +8,7 @@ from .forms import (
     ButyCreateForm,
     DokonajZwrotuForm,
     DokonajSprzedazyForm,
+    MagazynUpdateForm,
 )
 
 
@@ -55,11 +56,8 @@ class MagazynCreateView(PermissionRequiredMixin, CreateView):
 class MagazynUpdateView(PermissionRequiredMixin, UpdateView):
     model = Buty
     context_object_name = "para"
+    form_class = MagazynUpdateForm
     template_name = "magazyn/magazyn_update.html"
-    fields = [
-        "szacowana_wartosc",
-        "uwagi",
-    ]
     permission_required = "magazyn.magazyn_admin"
 
 
