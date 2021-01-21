@@ -5,38 +5,54 @@
 {% block title %} Magazyn {% endblock title %}
 
 {% block content %}
-    <div class="container-fluid main-site">
-        <h1>{{ list_header }}</h1>
+<div class="container-fluid main-site">
+    <h1>{{ list_header }}</h1>
 
-        <div class="card card-body">
-                <form method="get">
-                    {{my_filter.form}}
+    <div class="card card-body">
+        <form method="get">
+            {{my_filter.form}}
 
-                    <button class="btn btn-dark btn-sm float-right" type="submit">Szukaj</button>
-                </form>
-            </div>
-            <br>
+            <button class="btn btn-dark btn-sm float-right" type="submit">Szukaj</button>
+        </form>
+    </div>
+    <br>
 
-        <div class="card card-body">
-            <table class="table">
-                <tr>
-                    <th>Model</th>
-                    <th>Rozmiar</th>
+    <div class="card card-body">
+        <table class="table">
+            <tr>
+                <th>Model</th>
+                <th>Rozmiar</th>
+                {% if list_status == "w magazynie" %}
+                    <th>Cena zakupu</th>
                     <th>Data zakupu</th>
-                    <th>Status</th>
-                </tr>
-                
+                {% elif list_status == "zwrot" %}
+                    <th>Data zwrotu</th>
+                    <th>Data przesyłki</th>
+                {% elif list_status == "sprzedano" %}
+                    <th>Cena sprzedaży</th>
+                    <th>Data sprzedaży</th>
+                {% endif %}
+            </tr>
+
             {% for para in buty %}
-                    <tr>
-                        <td><a href="{{ para.get_absolute_url }}">{{ para.marka }} {{ para.model_buta }} {{ para.typ }} {{ para.kolor }}</a></td>
-                        <td>{{para.rozmiar}}</td>
-                        <td>{{para.data_zakupu}}</td>
-                        <td>{{para.status}}</td>
-                    </tr>
+            <tr>
+                <td><a href="{{ para.get_absolute_url }}">{{ para.marka }} {{ para.model_buta }} {{ para.typ }}</a></td>
+                <td>{{para.rozmiar}}</td>
+                {% if list_status == "w magazynie" %}
+                    <td>{{para.cena_zakupu}} zł</td>
+                    <td>{{para.data_zakupu}}</td>
+                {% elif list_status == "zwrot" %}
+                    <td>{{para.zwrot.data_zwrotu}}</td>
+                    <td>{{para.zwrot.data_przesylki}}</td>
+                {% elif list_status == "sprzedano" %}
+                    <td>{{para.sprzedane.cena_sprzedazy}} zł</td>
+                    <td>{{para.sprzedane.data_sprzedazy}}</td>
+                {% endif %}
+            </tr>
             {% endfor %}
 
-            </table>
-        
-        
+        </table>
+
+
     </div>
-{% endblock content %}
+    {% endblock content %}

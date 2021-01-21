@@ -32,6 +32,7 @@ class MagazynListView(PermissionRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["my_filter"] = ButyFilter()
         context["list_header"] = "Lista butów"
+        context["list_status"] = "w magazynie"
         return context
 
 
@@ -84,6 +85,7 @@ class SprzedaneListView(PermissionRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["my_filter"] = ButyFilter()
         context["list_header"] = "Sprzedane buty"
+        context["list_status"] = "sprzedano"
         return context
 
 
@@ -102,6 +104,7 @@ class ZwrotListView(PermissionRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["my_filter"] = ButyFilter()
         context["list_header"] = "Zwrócone buty"
+        context["list_status"] = "zwrot"
         return context
 
 
